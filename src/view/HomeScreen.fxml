@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="738.0" prefWidth="1375.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomeScreen">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" layoutX="-3.0" layoutY="-4.0" prefHeight="742.0" prefWidth="1375.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="338.0">
+               <children>
+                  <Button layoutX="71.0" layoutY="127.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Existing Customer Record" />
+                  <Button layoutX="71.0" layoutY="186.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Add New Customer" />
+                  <Button layoutX="71.0" layoutY="246.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Add Appointment" />
+                  <Button layoutX="71.0" layoutY="304.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Existing Appointment" />
+                  <Button layoutX="245.0" layoutY="653.0" mnemonicParsing="false" onAction="#onLogoutButton" prefHeight="34.0" prefWidth="100.0" text="Log Out" />
+                  <Button layoutX="71.0" layoutY="362.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Reports" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="659.0" prefWidth="894.0">
+               <children>
+                  <TableView layoutX="17.0" layoutY="76.0" prefHeight="558.0" prefWidth="934.0">
+                    <columns>
+                      <TableColumn prefWidth="101.0" text="Start Date/Time" />
+                      <TableColumn prefWidth="98.0" text="End Date/Time" />
+                        <TableColumn prefWidth="100.0" text="Appointment ID" />
+                        <TableColumn prefWidth="68.0" text="Title" />
+                        <TableColumn minWidth="0.0" prefWidth="130.0" text="Discription" />
+                        <TableColumn prefWidth="66.0" text="Location" />
+                        <TableColumn prefWidth="75.0" text="Contact" />
+                        <TableColumn prefWidth="140.0" text="Type" />
+                        <TableColumn prefWidth="87.0" text="Customer ID" />
+                        <TableColumn prefWidth="68.0" text="User ID" />
+                    </columns>
+                  </TableView>
+                  <Button layoutX="411.0" layoutY="656.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="147.0" text="Modify Appointment" />
+                  <Button layoutX="783.0" layoutY="656.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="147.0" text="Delete Appointment" />
+                  <RadioButton layoutX="83.0" layoutY="35.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="108.0" text="View Week" />
+                  <RadioButton layoutX="284.0" layoutY="35.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="108.0" text="View Month" />
+                  <Button layoutX="44.0" layoutY="656.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="147.0" text="View Appointment " />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
