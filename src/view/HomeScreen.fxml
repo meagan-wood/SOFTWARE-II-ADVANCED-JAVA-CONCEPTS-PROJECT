@@ -9,9 +9,9 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="338.0">
                <children>
-                  <Button layoutX="71.0" layoutY="127.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Existing Customer Record" />
-                  <Button layoutX="71.0" layoutY="186.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Add New Customer" />
-                  <Button layoutX="71.0" layoutY="246.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Add Appointment" />
+                  <Button layoutX="71.0" layoutY="127.0" mnemonicParsing="false" onAction="#onExistingCustButton" prefHeight="34.0" prefWidth="206.0" text="Existing Customer Record" />
+                  <Button layoutX="71.0" layoutY="186.0" mnemonicParsing="false" onAction="#onAddNewCustomerButton" prefHeight="34.0" prefWidth="206.0" text="Add New Customer" />
+                  <Button layoutX="71.0" layoutY="246.0" mnemonicParsing="false" onAction="#onCreateAppButton" prefHeight="34.0" prefWidth="206.0" text="Create Appointment" />
                   <Button layoutX="71.0" layoutY="304.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Existing Appointment" />
                   <Button layoutX="245.0" layoutY="653.0" mnemonicParsing="false" onAction="#onLogoutButton" prefHeight="34.0" prefWidth="100.0" text="Log Out" />
                   <Button layoutX="71.0" layoutY="362.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Reports" />
