@@ -40,7 +40,7 @@
       <TextField layoutX="701.0" layoutY="280.0" />
       <TextField layoutX="701.0" layoutY="206.0" />
       <TextField layoutX="948.0" layoutY="426.0" />
-      <Label layoutX="935.0" layoutY="409.0" text="End Date and TIme" />
+      <Label layoutX="935.0" layoutY="409.0" text="End Date and Time" />
       <Label layoutX="924.0" layoutY="263.0" text="Contact Name" />
       <Label layoutX="680.0" layoutY="337.0" text="Type" />
       <TextField layoutX="701.0" layoutY="354.0" />

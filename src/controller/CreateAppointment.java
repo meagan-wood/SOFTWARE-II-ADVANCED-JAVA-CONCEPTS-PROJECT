@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,9 +11,17 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class CreateAppointment {
+public class CreateAppointment implements Initializable {
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
         //alert3.getDialogPane().getScene().getRoot().setStyle("-fx-font-family : 'Times New Roman';");
@@ -27,4 +36,6 @@ public class CreateAppointment {
             stage.show();
         }
     }
+
+
 }
