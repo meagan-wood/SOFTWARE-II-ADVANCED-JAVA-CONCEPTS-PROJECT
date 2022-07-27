@@ -16,18 +16,18 @@
       <Label layoutX="37.0" layoutY="260.0" prefHeight="17.0" prefWidth="46.0" text="Address" />
       <Label layoutX="367.0" layoutY="260.0" prefHeight="17.0" prefWidth="66.0" text="Postal Code" />
       <Label layoutX="34.0" layoutY="97.0" prefHeight="17.0" prefWidth="73.0" text="Customer ID" />
-      <TextField layoutX="80.0" layoutY="176.0" prefHeight="25.0" prefWidth="217.0" promptText="First and Last Name" />
-      <TextField layoutX="454.0" layoutY="176.0" prefHeight="25.0" prefWidth="149.0" promptText="Format xxx-xxx-xxxx" />
-      <TextField layoutX="80.0" layoutY="256.0" prefHeight="25.0" prefWidth="217.0" />
-      <TextField layoutX="454.0" layoutY="256.0" prefHeight="25.0" prefWidth="149.0" />
-      <TextField editable="false" layoutX="107.0" layoutY="93.0" prefHeight="25.0" prefWidth="105.0" />
+      <TextField fx:id="nameText" layoutX="80.0" layoutY="176.0" prefHeight="25.0" prefWidth="217.0" promptText="First and Last Name" />
+      <TextField fx:id="phoneNumberText" layoutX="454.0" layoutY="176.0" prefHeight="25.0" prefWidth="149.0" promptText="Format xxx-xxx-xxxx" />
+      <TextField fx:id="addressText" layoutX="80.0" layoutY="256.0" prefHeight="25.0" prefWidth="217.0" />
+      <TextField fx:id="postalCodeText" layoutX="454.0" layoutY="256.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="customerIdText" editable="false" layoutX="107.0" layoutY="93.0" prefHeight="25.0" prefWidth="105.0" />
       <Label layoutX="126.0" layoutY="118.0" prefHeight="0.0" prefWidth="73.0" text="Auto Generated" textFill="#000000a4">
          <font>
             <Font size="8.0" />
          </font>
       </Label>
-      <ComboBox layoutX="80.0" layoutY="325.0" prefHeight="25.0" prefWidth="217.0" />
-      <ComboBox layoutX="454.0" layoutY="325.0" prefHeight="25.0" prefWidth="149.0" />
+      <ComboBox fx:id="countryComboBox" layoutX="80.0" layoutY="325.0" prefHeight="25.0" prefWidth="217.0" />
+      <ComboBox fx:id="stateComboBox" layoutX="454.0" layoutY="325.0" prefHeight="25.0" prefWidth="149.0" />
       <Label layoutX="371.0" layoutY="329.0" prefHeight="17.0" prefWidth="83.0" text="State/Province" />
       <Label layoutX="34.0" layoutY="329.0" prefHeight="17.0" prefWidth="52.0" text="Country" />
       <Button layoutX="307.0" layoutY="465.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />

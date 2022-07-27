@@ -57,12 +57,12 @@ public class HomeScreen implements Initializable {
             typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
             userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
 
-    //public void appointmentsData() throws SQLException {
+
     public static ObservableList<Appointment> appointments() throws SQLException{
 
         ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
