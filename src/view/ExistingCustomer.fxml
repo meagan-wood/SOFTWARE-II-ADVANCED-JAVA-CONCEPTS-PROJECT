@@ -22,7 +22,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="searchTextBox" layoutX="460.0" layoutY="53.0" prefHeight="25.0" prefWidth="171.0" promptText="Customer Name" />
       <Button layoutX="255.0" layoutY="484.0" mnemonicParsing="false" onAction="#onEditCustomerButton" prefHeight="25.0" prefWidth="137.0" text="Edit Customer" />
       <Button layoutX="494.0" layoutY="484.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="137.0" text="Delete Customer" />
       <Label layoutX="699.0" layoutY="56.0" prefHeight="17.0" prefWidth="203.0" text="Update Customer Information">
@@ -56,6 +55,5 @@
       </TableView>
       <Label layoutX="721.0" layoutY="290.0" text="Existing Appointments" />
       <Button layoutX="1056.0" layoutY="484.0" mnemonicParsing="false" text="Delete Appointment" />
-      <Button layoutX="408.0" layoutY="53.0" mnemonicParsing="false" onAction="#onSearchButton" text="Search" />
    </children>
 </AnchorPane>

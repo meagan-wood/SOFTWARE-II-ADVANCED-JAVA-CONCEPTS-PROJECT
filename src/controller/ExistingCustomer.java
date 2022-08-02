@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -138,45 +137,5 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
-
-    public void onSearchButton(ActionEvent actionEvent) {
-
-        String q = searchTextBox.getText();
-        ObservableList<Customer> c = Customer.lookupCustomer(q);
-
-       /* if(c.size() == 0){
-            try{
-                 int customerId = Integer.parseInt(q);
-                Customer customer = Customer.lookupCustomer(customerId);
-
-                if(customer != null){
-                    c.add(customer);
-                }
-                else{
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText("Not Found");
-                    alert.setContentText("Please search by exact name or Id");
-                    alert.showAndWait();
-                }
-            } catch (NumberFormatException e){
-                if(!c.isEmpty()){
-                    existingCustomersTable.setItems(c);
-                }
-                else{
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Warning");
-                    alert.setHeaderText("Not Found");
-                    alert.setContentText("Please search by exact name or Id");
-                    alert.showAndWait();
-                }
-            }
-        }
-        existingCustomersTable.setItems(c);
-        searchTextBox.setText(" ");*/
-
-        existingCustomersTable.setItems(c);
-        searchTextBox.setText(" ");
-    }
 
 }

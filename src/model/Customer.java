@@ -97,31 +97,8 @@ public class Customer {
         this.divisionId = divisionId;
     }**/
 
-    //public static ObservableList<Customer> getAllCustomers(){
-      //  return allCustomers;
-    //}
-    public static ObservableList<Customer> lookupCustomer(String customerName) {
-        ObservableList<Customer> searchCustomers = FXCollections.observableArrayList();
-        //ObservableList<Customer> allCustomers = Customer.getAllCustomers();
-        for (Customer customer : allCustomers) {
-            if (customer.getCustomerName().contains(customerName)) {
-                searchCustomers.add(customer);
-            } else if (Integer.toString(customer.getCustomerId()).contains(customerName)){
-                searchCustomers.add(customer);
-            }
-        }
-        return searchCustomers;
-    }
-   /*
-    public static Customer lookupCustomer(int customerId){
-        ObservableList<Customer> allCustomers = Customer.getAllCustomers();
-        for(Customer customer : allCustomers){
-            if(customer.getCustomerId() == customerId){
-                return customer;
-            }
-        }
-        return null;
-    }*/
+
+
 
 }
 

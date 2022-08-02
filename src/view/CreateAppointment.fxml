@@ -23,8 +23,6 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="376.0" layoutY="83.0" mnemonicParsing="false" text="Search" />
-      <TextField layoutX="428.0" layoutY="83.0" promptText="Customer Name" />
       <Button layoutX="452.0" layoutY="458.0" mnemonicParsing="false" onAction="#selectCustomerButton" text="Select Customer" />
       <TextField fx:id="customerIdText" editable="false" layoutX="927.0" layoutY="106.0" prefHeight="25.0" prefWidth="149.0" />
       <TextField fx:id="descriptionText" layoutX="927.0" layoutY="164.0" prefHeight="25.0" prefWidth="149.0" />

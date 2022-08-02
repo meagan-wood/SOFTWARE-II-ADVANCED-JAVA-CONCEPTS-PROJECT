@@ -1,6 +1,5 @@
 package controller;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,10 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
@@ -86,19 +82,15 @@ public class HomeScreen implements Initializable {
                 Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId,contactId);
                 appointmentList.add(newAppointment);
             }
-
         }
         catch (SQLException ex){
             ex.printStackTrace();
         }
-        //database.JDBC.closeConnection();
         return appointmentList;
-
     }
 
     public void onLogoutButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
-        //alert3.getDialogPane().getScene().getRoot().setStyle("-fx-font-family : 'Times New Roman';");
         alert3.setTitle("Confirmation");
         alert3.setHeaderText((null));
         alert3.setContentText("Are you sure you want to log out?");
@@ -127,6 +119,29 @@ public class HomeScreen implements Initializable {
 
     public void onCreateAppButton(ActionEvent actionEvent) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("/view/CreateAppointment.FXML"));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    public void onModifyAppointmentButton(ActionEvent actionEvent) throws IOException {
+        Appointment a = (Appointment) appointmentTableView.getSelectionModel().getSelectedItem();
+
+        if (a == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing Selected");
+            alert.setContentText("Please select an appointment");
+            alert.showAndWait();
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/ModifyAppointment.FXML"));
+        Parent root = loader.load();
+
+        ModifyAppointmentController MAppointmentController = loader.getController();
+        MAppointmentController.sendAppointment(a);
+
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
