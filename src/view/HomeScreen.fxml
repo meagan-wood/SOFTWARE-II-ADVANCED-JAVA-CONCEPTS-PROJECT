@@ -34,8 +34,9 @@
                   </TableView>
                   <Button layoutX="180.0" layoutY="656.0" mnemonicParsing="false" onAction="#onModifyAppointmentButton" prefHeight="34.0" prefWidth="147.0" text="Modify Appointment" />
                   <Button layoutX="634.0" layoutY="656.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="147.0" text="Delete Appointment" />
-                  <RadioButton layoutX="83.0" layoutY="35.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="108.0" text="View Week" />
-                  <RadioButton layoutX="284.0" layoutY="35.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="108.0" text="View Month" />
+                  <RadioButton layoutX="83.0" layoutY="35.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="108.0" text="View All" />
+                  <RadioButton layoutX="284.0" layoutY="35.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="108.0" text="View Week" />
+                  <RadioButton layoutX="469.0" layoutY="44.0" mnemonicParsing="false" text="View Month" />
                </children>
             </AnchorPane>
         </items>

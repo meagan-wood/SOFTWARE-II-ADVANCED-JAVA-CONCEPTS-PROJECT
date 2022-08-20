@@ -24,7 +24,7 @@
       <TextField fx:id="locationText" layoutX="73.0" layoutY="224.0" prefHeight="25.0" prefWidth="150.0" />
       <TextField fx:id="titleText" layoutX="73.0" layoutY="164.0" prefWidth="150.0" />
       <Label layoutX="73.0" layoutY="398.0" text="End Date " />
-      <Label layoutX="367.0" layoutY="207.0" text="Contact Name" />
+      <Label layoutX="367.0" layoutY="207.0" text="Contact " />
       <Label layoutX="73.0" layoutY="272.0" text="Type" />
       <TextField fx:id="typeText" layoutX="73.0" layoutY="289.0" prefWidth="150.0" />
       <Label layoutX="73.0" layoutY="337.0" text="Start Date " />

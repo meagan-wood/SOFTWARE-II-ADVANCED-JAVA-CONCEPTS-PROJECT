@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Contact;
 import model.Country;
 import model.Customer;
 import model.Division;
@@ -63,6 +64,7 @@ public class CreateAppointment implements Initializable {
             zipcodeColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
             //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
+            contactNameComboBox.setItems(contacts());
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
@@ -88,19 +90,41 @@ public class CreateAppointment implements Initializable {
                 //int divisionId = resultSet.getInt("Division_ID");
                 Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, postalCode, customerId);
                 existingCustomersList.add(newCustomer);
+                //System.out.println("Customer List 2: " + newCustomer);
             }
         }
         catch (SQLException ex){
             ex.printStackTrace();
         }
-
+        //System.out.println("Customer List: " + existingCustomersList);
         return existingCustomersList;
 
     }
+//observable list to populate contact names into combo box  // public static ObservableList<Contact> contacts()
+    public static ObservableList<String> contacts() throws SQLException{
+
+        ObservableList<String> contactNamesList = FXCollections.observableArrayList(); //ObservableList<Contact>
+        try{
+            String sql = "SELECT contact_name FROM contacts";
+            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+                String contactName = resultSet.getString("Contact_Name");
+                String newContact = new String(contactName); //Contact newContact = new Contact(contactName);
+                contactNamesList.add(newContact);
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        System.out.println("Error 2: " + contactNamesList);
+        return contactNamesList;
+    }
+
 
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
-        //alert3.getDialogPane().getScene().getRoot().setStyle("-fx-font-family : 'Times New Roman';");
         alert3.setTitle("Confirmation");
         alert3.setHeaderText((null));
         alert3.setContentText("Are you sure you want to cancel? All data will be lost.");
