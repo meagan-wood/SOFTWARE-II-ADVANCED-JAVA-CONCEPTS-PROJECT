@@ -8,16 +8,15 @@
    <children>
       <TextField fx:id="userNameText" layoutX="76.0" layoutY="127.0" />
       <TextField fx:id="passwordText" layoutX="76.0" layoutY="217.0" />
-      <Label layoutX="14.0" layoutY="14.0" text="USER LOGIN">
+      <Label fx:id="loginLabel" layoutX="14.0" layoutY="14.0" text="USER LOGIN">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="45.0" layoutY="101.0" text="User Name:" />
-      <Label layoutX="45.0" layoutY="192.0" text="Password:" />
-      <Button layoutX="77.0" layoutY="280.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />
-      <Button layoutX="173.0" layoutY="280.0" mnemonicParsing="false" onAction="#onEnterButton" prefHeight="25.0" prefWidth="52.0" text="Enter" />
+      <Label fx:id="usernameLabel" layoutX="45.0" layoutY="101.0" text="Username:" />
+      <Label fx:id="passwordLabel" layoutX="45.0" layoutY="192.0" text="Password:" />
+      <Button fx:id="cancelButton" layoutX="77.0" layoutY="280.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />
+      <Button fx:id="enterButton" layoutX="173.0" layoutY="280.0" mnemonicParsing="false" onAction="#onEnterButton" prefHeight="25.0" prefWidth="52.0" text="Enter" />
       <Label fx:id="timeZoneLabel" layoutX="14.0" layoutY="369.0" prefHeight="17.0" prefWidth="80.0" text="Location" textAlignment="CENTER" />
-      <Label layoutX="233.0" layoutY="369.0" prefHeight="17.0" prefWidth="53.0" text="Language" textAlignment="CENTER" />
    </children>
 </AnchorPane>

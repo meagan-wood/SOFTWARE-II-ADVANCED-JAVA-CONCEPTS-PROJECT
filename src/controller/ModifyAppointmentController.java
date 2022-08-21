@@ -2,6 +2,7 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,9 +11,11 @@ import javafx.stage.Stage;
 import model.Appointment;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class ModifyAppointmentController {
+public class ModifyAppointmentController implements Initializable {
     public TextField customerIdText;
     public TextField descriptionText;
     public TextField userIdText;
@@ -27,6 +30,14 @@ public class ModifyAppointmentController {
     public ComboBox endTimeComboBox;
 
     public Appointment appointmentToModify = null;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+
 
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
 
@@ -63,4 +74,6 @@ public class ModifyAppointmentController {
         //startTimeComboBox
         //endTimeComboBox
     }
+
+
 }
