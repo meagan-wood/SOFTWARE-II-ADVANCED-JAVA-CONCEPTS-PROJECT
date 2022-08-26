@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +14,9 @@ import model.Appointment;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -34,10 +39,37 @@ public class ModifyAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            contactNameComboBox.setItems(contactsId());
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
 
     }
 
+    public static ObservableList<Integer> contactsId() throws SQLException {
 
+        ObservableList<Integer> contactNamesList = FXCollections.observableArrayList(); //ObservableList<Contact>
+        try{
+            String sql = "SELECT contact_ID FROM contacts";
+            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+                Integer contactId = resultSet.getInt("Contact_ID");
+                Integer newContact = Integer.valueOf(contactId); //Contact newContact = new Contact(contactName);
+                contactNamesList.add(newContact);
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        //System.out.println("Error 2: " + contactNamesList);
+        return contactNamesList;
+
+    }
 
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
 
@@ -64,7 +96,7 @@ public class ModifyAppointmentController implements Initializable {
         customerIdText.setText(String.valueOf(appointment.getCustomerId()));
         descriptionText.setText(appointment.getDescription());
         userIdText.setText(String.valueOf(appointment.getUserId()));
-        //contactNameComboBox
+        contactNameComboBox.setValue(appointment.getUserId());
         appointmentIdText.setText(String.valueOf(appointment.getAppointmentId()));
         locationText.setText(appointment.getLocation());
         titleText.setText(appointment.getTitle());

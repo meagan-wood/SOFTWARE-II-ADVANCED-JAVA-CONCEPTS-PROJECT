@@ -49,8 +49,11 @@
       <Label layoutX="38.0" layoutY="59.0" prefHeight="17.0" prefWidth="227.0" text="Please select a customer to update/delete." textFill="#e40f0f" />
       <TableView fx:id="existingAppointmentsTable" layoutX="721.0" layoutY="309.0" prefHeight="166.0" prefWidth="464.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn fx:id="startColumn" prefWidth="110.0" text="Start Date/Time" />
+          <TableColumn fx:id="endColumn" prefWidth="101.0" text="End Date/Time" />
+            <TableColumn fx:id="locationColumn" prefWidth="74.0" text="Location" />
+            <TableColumn fx:id="contactColumn" prefWidth="81.0" text="Contact" />
+            <TableColumn fx:id="typeColumn" prefWidth="97.0" text="Type" />
         </columns>
       </TableView>
       <Label layoutX="721.0" layoutY="290.0" text="Existing Appointments" />

@@ -26,7 +26,7 @@
             <Font size="8.0" />
          </font>
       </Label>
-      <ComboBox fx:id="countryComboBox" layoutX="80.0" layoutY="325.0" prefHeight="25.0" prefWidth="217.0" />
+      <ComboBox fx:id="countryComboBox" layoutX="80.0" layoutY="325.0" onAction="#onCountry" prefHeight="25.0" prefWidth="217.0" />
       <ComboBox fx:id="stateComboBox" layoutX="454.0" layoutY="325.0" prefHeight="25.0" prefWidth="149.0" />
       <Label layoutX="371.0" layoutY="329.0" prefHeight="17.0" prefWidth="83.0" text="State/Province" />
       <Label layoutX="34.0" layoutY="329.0" prefHeight="17.0" prefWidth="52.0" text="Country" />

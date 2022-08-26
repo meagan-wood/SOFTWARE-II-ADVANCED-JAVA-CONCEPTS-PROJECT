@@ -32,6 +32,8 @@ public class Customer {
         //this.divisionId = divisionId;
     }
 
+
+
     public Integer getCustomerId() {
         return customerId;
     }
@@ -96,7 +98,6 @@ public class Customer {
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
     }**/
-
 
 
 

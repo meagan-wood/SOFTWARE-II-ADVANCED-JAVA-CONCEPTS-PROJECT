@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -65,6 +67,8 @@ public class CreateAppointment implements Initializable {
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
             //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
             contactNameComboBox.setItems(contacts());
+            startEndTimeCombos();
+
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
@@ -90,16 +94,17 @@ public class CreateAppointment implements Initializable {
                 //int divisionId = resultSet.getInt("Division_ID");
                 Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, postalCode, customerId);
                 existingCustomersList.add(newCustomer);
-                //System.out.println("Customer List 2: " + newCustomer);
             }
         }
         catch (SQLException ex){
             ex.printStackTrace();
         }
-        //System.out.println("Customer List: " + existingCustomersList);
         return existingCustomersList;
 
     }
+
+
+
 //observable list to populate contact names into combo box  // public static ObservableList<Contact> contacts()
     public static ObservableList<String> contacts() throws SQLException{
 
@@ -118,9 +123,50 @@ public class CreateAppointment implements Initializable {
         catch (SQLException ex){
             ex.printStackTrace();
         }
-        System.out.println("Error 2: " + contactNamesList);
+        //System.out.println("Error 2: " + contactNamesList);
         return contactNamesList;
+
     }
+
+
+
+    private void startEndTimeCombos(){
+
+
+        ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
+        LocalTime start = LocalTime.of(8, 0);
+        LocalTime end = LocalTime.of(22, 0);
+        schedulingTimes.add(start.toString());
+        while(start.isBefore(end)){
+            start = start.plusMinutes(30);
+            schedulingTimes.add(start.toString());
+        }
+        startTimeComboBox.setItems(schedulingTimes);
+        endTimeComboBox.setItems(schedulingTimes);
+
+        /*ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
+
+        LocalTime start = LocalTime.of(8, 0);
+        //ZoneId zone = ZoneId.of("America/New_York");
+        //start.atOffset(zone.getRules().getOffset(LocalDateTime.now(ZoneId.of("America/New_York"))));
+        //ZoneId zone = ZoneId.of(String.valueOf(ZoneId.systemDefault()));
+        //start.atOffset(zone.getRules().getOffset(LocalDateTime.now()));
+        //System.out.println(start.atOffset(zone.getRules().getOffset(LocalDateTime.now())));
+        OffsetTime end = LocalTime.of(22, 0).atOffset(ZoneOffset.of("America/New_York"));
+        //LocalTime st = ZoneOffset.of("America/New_York").
+        System.out.println(end);
+
+        schedulingTimes.add(start.toString());
+        while(start.isBefore(LocalTime.from(end))){
+            start = start.plusMinutes(30);
+            schedulingTimes.add(start.toString());
+        }
+        startTimeComboBox.setItems(schedulingTimes);
+        endTimeComboBox.setItems(schedulingTimes);
+*/
+    }
+
+
 
 
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {

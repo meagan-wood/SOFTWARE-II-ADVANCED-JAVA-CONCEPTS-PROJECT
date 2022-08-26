@@ -1,5 +1,6 @@
 package controller;
 
+import database.Queries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +47,11 @@ public class ExistingCustomer implements Initializable {
     //public TableColumn <Customer, Integer>divisionIdColumn;
     static ObservableList<Customer> allCustomers;
     public TextField searchTextBox;
+    public TableColumn startColumn;
+    public TableColumn endColumn;
+    public TableColumn locationColumn;
+    public TableColumn contactColumn;
+    public TableColumn typeColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -116,25 +122,38 @@ public class ExistingCustomer implements Initializable {
     }
 
     public void onEditCustomerButton(ActionEvent actionEvent) {
+        //Integer customerID =
+      try {
+          Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
+          Customer c = (Customer) existingCustomersTable.getSelectionModel().getSelectedItem();
+          ObservableList<Appointment> a = Queries.associatedApointments(cID);
+          System.out.println(a);
+          if (c == null) {
+              Alert alert = new Alert(Alert.AlertType.ERROR);
+              alert.setTitle("Error");
+              alert.setHeaderText("Nothing Selected");
+              alert.setContentText("Please select a customer");
+              alert.showAndWait();
+              return;
+          } else {
+              existingAppointmentsTable.setItems(a);
+              startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+              endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+              locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+              contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+              typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+              nameTextBox.setText(c.getCustomerName());
+              phoneTextBox.setText(String.valueOf(c.getPhoneNumber()));
+              addressTextBox.setText(c.getAddress());
+              postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
+              idTextBox.setText(String.valueOf(c.getCustomerId()));
+              //countryComboBox.setItems();
 
-        Customer c = (Customer) existingCustomersTable.getSelectionModel().getSelectedItem();
-        if (c == null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Nothing Selected");
-            alert.setContentText("Please select a customer");
-            alert.showAndWait();
-            return;
-        }
-        else {
-            nameTextBox.setText(c.getCustomerName());
-            phoneTextBox.setText(String.valueOf(c.getPhoneNumber()));
-            addressTextBox.setText(c.getAddress());
-            postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
-            idTextBox.setText(String.valueOf(c.getCustomerId()));
-            //countryComboBox.setItems();
-
-        }
+          }
+      }
+      catch (Exception e){
+          e.printStackTrace();
+      }
     }
 
 
