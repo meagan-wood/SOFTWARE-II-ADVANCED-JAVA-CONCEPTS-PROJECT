@@ -1,6 +1,6 @@
 package controller;
 
-import database.Queries;
+import database.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,12 +41,11 @@ public class ExistingCustomer implements Initializable {
     public TextField addressTextBox;
     public TextField postalCodeTextBox;
     public TextField idTextBox;
-    public ComboBox countryComboBox;
+    public ComboBox<Country> countryComboBox;
     public ComboBox stateComboBox;
     public TableView existingAppointmentsTable;
     //public TableColumn <Customer, Integer>divisionIdColumn;
     static ObservableList<Customer> allCustomers;
-    public TextField searchTextBox;
     public TableColumn startColumn;
     public TableColumn endColumn;
     public TableColumn locationColumn;
@@ -57,7 +56,7 @@ public class ExistingCustomer implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            existingCustomersTable.setItems(existingCustomers());
+            existingCustomersTable.setItems(CustomerQueries.existingCustomers());
             nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
             phoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
             addressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
@@ -65,38 +64,12 @@ public class ExistingCustomer implements Initializable {
             stateColumn.setCellValueFactory(new PropertyValueFactory<Division, String>("division"));
             zipcodeColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
-            //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
+            countryComboBox.setItems(CountryQueries.getCountries());
+            stateComboBox.setItems(DivisionQueries.getDivisions());
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
 
-    }
-
-    public static ObservableList<Customer> existingCustomers() throws SQLException{
-
-        ObservableList<Customer> existingCustomersList = FXCollections.observableArrayList();
-        try{
-            String sql = "SELECT * FROM customers AS cu INNER JOIN first_level_divisions AS d ON cu.Division_ID = d.Division_ID INNER JOIN countries AS co ON d.Country_ID = co.Country_ID";
-            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-
-            while(resultSet.next()){
-                int customerId = resultSet.getInt("Customer_ID");
-                String customerName = resultSet.getString("Customer_Name");
-                String phoneNumber = resultSet.getString("Phone");
-                String address = resultSet.getString("Address");
-                String country = resultSet.getString("Country");
-                String division = resultSet.getString("Division");
-                String postalCode = resultSet.getString("Postal_Code");
-                //int divisionId = resultSet.getInt("Division_ID");
-                Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, postalCode, customerId);
-                existingCustomersList.add(newCustomer);
-            }
-        }
-        catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        return existingCustomersList;
     }
 
 
@@ -122,12 +95,11 @@ public class ExistingCustomer implements Initializable {
     }
 
     public void onEditCustomerButton(ActionEvent actionEvent) {
-        //Integer customerID =
+
       try {
           Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
-          Customer c = (Customer) existingCustomersTable.getSelectionModel().getSelectedItem();
-          ObservableList<Appointment> a = Queries.associatedApointments(cID);
-          System.out.println(a);
+          Customer c =  existingCustomersTable.getSelectionModel().getSelectedItem();
+          ObservableList<Appointment> a = AppointmentQueries.associatedApointments(cID);
           if (c == null) {
               Alert alert = new Alert(Alert.AlertType.ERROR);
               alert.setTitle("Error");
@@ -147,8 +119,8 @@ public class ExistingCustomer implements Initializable {
               addressTextBox.setText(c.getAddress());
               postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
               idTextBox.setText(String.valueOf(c.getCustomerId()));
-              //countryComboBox.setItems();
-
+              countryComboBox.setValue(c.getCountry());
+              stateComboBox.setValue(c.getDivision());
           }
       }
       catch (Exception e){
@@ -157,4 +129,12 @@ public class ExistingCustomer implements Initializable {
     }
 
 
+    public void onCountry(ActionEvent actionEvent) throws SQLException {
+
+        int cID = countryComboBox.getValue().getCountryId();
+        //Division d = DivisionQueries.associatedDivisions(cID);
+        ObservableList<Division> d =DivisionQueries.associatedDivisions(cID);
+        stateComboBox.setItems(d);
+        //stateComboBox.setValue(d);
+    }
 }

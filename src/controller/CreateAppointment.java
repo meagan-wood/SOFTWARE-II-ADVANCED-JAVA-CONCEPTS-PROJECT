@@ -91,8 +91,9 @@ public class CreateAppointment implements Initializable {
                 String country = resultSet.getString("Country");
                 String division = resultSet.getString("Division");
                 String postalCode = resultSet.getString("Postal_Code");
-                //int divisionId = resultSet.getInt("Division_ID");
-                Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, postalCode, customerId);
+                int divisionId = resultSet.getInt("Division_ID");
+                int countryId = resultSet.getInt("Country_ID");
+                Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, divisionId, postalCode, customerId, countryId);/////
                 existingCustomersList.add(newCustomer);
             }
         }
@@ -102,8 +103,6 @@ public class CreateAppointment implements Initializable {
         return existingCustomersList;
 
     }
-
-
 
 //observable list to populate contact names into combo box  // public static ObservableList<Contact> contacts()
     public static ObservableList<String> contacts() throws SQLException{

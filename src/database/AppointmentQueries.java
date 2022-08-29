@@ -9,9 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-public class Queries {
-
-    public static ObservableList<Appointment> associatedApointments(int CustomerId) throws SQLException{
+public class AppointmentQueries {
+    public static ObservableList<Appointment> associatedApointments(int CustomerId) throws SQLException {
 
         ObservableList customerAppointments = FXCollections.observableArrayList();
 
@@ -39,10 +38,9 @@ public class Queries {
             }
         }
         catch
-            (SQLException ex) {
+        (SQLException ex) {
             ex.printStackTrace();
         }
         return customerAppointments;
     }
-
 }

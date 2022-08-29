@@ -1,10 +1,12 @@
 package model;
 
 
+import database.CountryQueries;
+import database.DivisionQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Timestamp;
+import java.sql.SQLException;
 
 /** Customer Class.
  */
@@ -14,22 +16,28 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phoneNumber;
+    private int divisionId;
     private String division;
-    private String country;
+    private String countryName;
+    private int countryId; //////
     //private int divisionId;
 
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
-    public Customer(String customerName, String phoneNumber, String address, String country, String division, String postalCode, Integer customerId) {
+
+
+    public Customer(String customerName, String phoneNumber, String address, String countryName, String division, int divisionId, String postalCode, Integer customerId, int countryId) {
 
         this.customerName = customerName;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.country = country;
+        this.countryName = countryName;
         this.division = division;
         this.postalCode = postalCode;
         this.customerId = customerId;
-        //this.divisionId = divisionId;
+        this.divisionId = divisionId;
+
+
     }
 
 
@@ -75,7 +83,8 @@ public class Customer {
     }
 
 
-    public String getDivision() {
+    public String getDivision(){
+        //return DivisionQueries.associatedDivisions(countryId);
         return division;
     }
 
@@ -83,21 +92,25 @@ public class Customer {
         this.division = division;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
-    /**public int getDivisionId() {
+    public Country getCountry() throws SQLException {
+        return CountryQueries.getCountryByDivision(divisionId);
+    }
+
+    public int getDivisionId() {
         return divisionId;
     }
 
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
-    }**/
+    }
 
 
 
