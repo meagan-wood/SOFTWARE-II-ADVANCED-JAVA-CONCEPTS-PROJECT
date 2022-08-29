@@ -20,9 +20,9 @@ public class Customer {
     private String division;
     private String countryName;
     private int countryId; //////
-    //private int divisionId;
 
-    private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
+
+    //private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
 
 
@@ -36,7 +36,7 @@ public class Customer {
         this.postalCode = postalCode;
         this.customerId = customerId;
         this.divisionId = divisionId;
-
+        this.countryId = countryId;
 
     }
 
@@ -83,9 +83,9 @@ public class Customer {
     }
 
 
-    public String getDivision(){
-        //return DivisionQueries.associatedDivisions(countryId);
-        return division;
+    public Division getDivision() throws SQLException {
+        return DivisionQueries.divisionsByCountry(countryId);
+        //return division;
     }
 
     public void setDivision(String division) {

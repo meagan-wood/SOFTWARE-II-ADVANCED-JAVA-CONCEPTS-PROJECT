@@ -32,7 +32,7 @@ public class DivisionQueries {
         return divisionList;
     }
 
-    public static ObservableList<Division> associatedDivisions(Integer countryId) throws SQLException{
+    public static ObservableList<Division> associatedDivisions(int countryId) throws SQLException{
 
         ObservableList sortedDivisions = FXCollections.observableArrayList();
 
@@ -56,4 +56,26 @@ public class DivisionQueries {
         }
        return sortedDivisions;
     }
+    public static Division divisionsByCountry(int countryId) throws SQLException{
+
+        try{
+            String sql = "SELECT * FROM first_level_divisions WHERE Country_ID=?";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setInt(1, countryId);
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+                Integer divisionId = resultSet.getInt("Division_ID");
+                String divisionName = resultSet.getString("Division");
+                Integer countryID = resultSet.getInt("Country_ID");
+                Division newDivision = new Division(divisionId, divisionName, countryID);
+                return newDivision;
+            }
+        }
+        catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 }

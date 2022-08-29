@@ -1,5 +1,7 @@
 package controller;
 
+import database.ContactQueries;
+import database.CustomerQueries;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,7 +59,7 @@ public class CreateAppointment implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            custCreateAppTable.setItems(customers());
+            custCreateAppTable.setItems(CustomerQueries.existingCustomers());
             nameColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
             phoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
             addressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
@@ -66,7 +68,7 @@ public class CreateAppointment implements Initializable {
             zipcodeColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
             //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
-            contactNameComboBox.setItems(contacts());
+            contactNameComboBox.setItems(ContactQueries.contacts());
             startEndTimeCombos();
 
         } catch (SQLException throwable) {
@@ -75,63 +77,9 @@ public class CreateAppointment implements Initializable {
 
     }
 
-    public static ObservableList<Customer> customers() throws SQLException{
-
-        ObservableList<Customer> existingCustomersList = FXCollections.observableArrayList();
-        try{
-            String sql = "SELECT * FROM customers AS cu INNER JOIN first_level_divisions AS d ON cu.Division_ID = d.Division_ID INNER JOIN countries AS co ON d.Country_ID = co.Country_ID";
-            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-
-            while(resultSet.next()){
-                int customerId = resultSet.getInt("Customer_ID");
-                String customerName = resultSet.getString("Customer_Name");
-                String phoneNumber = resultSet.getString("Phone");
-                String address = resultSet.getString("Address");
-                String country = resultSet.getString("Country");
-                String division = resultSet.getString("Division");
-                String postalCode = resultSet.getString("Postal_Code");
-                int divisionId = resultSet.getInt("Division_ID");
-                int countryId = resultSet.getInt("Country_ID");
-                Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, divisionId, postalCode, customerId, countryId);/////
-                existingCustomersList.add(newCustomer);
-            }
-        }
-        catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        return existingCustomersList;
-
-    }
-
-//observable list to populate contact names into combo box  // public static ObservableList<Contact> contacts()
-    public static ObservableList<String> contacts() throws SQLException{
-
-        ObservableList<String> contactNamesList = FXCollections.observableArrayList(); //ObservableList<Contact>
-        try{
-            String sql = "SELECT contact_name FROM contacts";
-            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-
-            while(resultSet.next()){
-                String contactName = resultSet.getString("Contact_Name");
-                String newContact = new String(contactName); //Contact newContact = new Contact(contactName);
-                contactNamesList.add(newContact);
-            }
-        }
-        catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        //System.out.println("Error 2: " + contactNamesList);
-        return contactNamesList;
-
-    }
-
 
 
     private void startEndTimeCombos(){
-
-
         ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
         LocalTime start = LocalTime.of(8, 0);
         LocalTime end = LocalTime.of(22, 0);

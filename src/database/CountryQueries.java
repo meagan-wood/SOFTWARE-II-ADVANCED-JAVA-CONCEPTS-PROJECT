@@ -10,9 +10,7 @@ import java.sql.SQLException;
 
 public class CountryQueries {
 
-
     public static Country getCountryByDivision(int divisionID) throws SQLException {
-
         try{
             String sql = "SELECT * FROM countries AS c INNER JOIN first_level_divisions AS d ON c.country_ID=d.country_ID" +
                     " AND d.division_ID=?";

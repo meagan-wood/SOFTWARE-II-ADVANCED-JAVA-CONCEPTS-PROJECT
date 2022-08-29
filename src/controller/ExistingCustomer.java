@@ -96,43 +96,44 @@ public class ExistingCustomer implements Initializable {
 
     public void onEditCustomerButton(ActionEvent actionEvent) {
 
-      try {
-          Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
-          Customer c =  existingCustomersTable.getSelectionModel().getSelectedItem();
-          ObservableList<Appointment> a = AppointmentQueries.associatedApointments(cID);
-          if (c == null) {
-              Alert alert = new Alert(Alert.AlertType.ERROR);
-              alert.setTitle("Error");
-              alert.setHeaderText("Nothing Selected");
-              alert.setContentText("Please select a customer");
-              alert.showAndWait();
-              return;
-          } else {
-              existingAppointmentsTable.setItems(a);
-              startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
-              endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
-              locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
-              contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
-              typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
-              nameTextBox.setText(c.getCustomerName());
-              phoneTextBox.setText(String.valueOf(c.getPhoneNumber()));
-              addressTextBox.setText(c.getAddress());
-              postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
-              idTextBox.setText(String.valueOf(c.getCustomerId()));
-              countryComboBox.setValue(c.getCountry());
-              stateComboBox.setValue(c.getDivision());
-          }
-      }
-      catch (Exception e){
-          e.printStackTrace();
-      }
+        Customer c =  existingCustomersTable.getSelectionModel().getSelectedItem();
+        if(c !=null){
+            try{
+                Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
+                ObservableList<Appointment> a = AppointmentQueries.associatedApointments(cID);
+                existingAppointmentsTable.setItems(a);
+                startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+                endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+                locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+                contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+                typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+                nameTextBox.setText(c.getCustomerName());
+                phoneTextBox.setText(String.valueOf(c.getPhoneNumber()));
+                addressTextBox.setText(c.getAddress());
+                postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
+                idTextBox.setText(String.valueOf(c.getCustomerId()));
+                countryComboBox.setValue(c.getCountry());
+                stateComboBox.setValue(c.getDivision());
+            }
+            catch (Exception e){
+            e.printStackTrace();
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing Selected");
+            alert.setContentText("Please select a customer");
+            alert.showAndWait();
+            return;
+        }
     }
 
 
     public void onCountry(ActionEvent actionEvent) throws SQLException {
 
         int cID = countryComboBox.getValue().getCountryId();
-        //Division d = DivisionQueries.associatedDivisions(cID);
+        //Division d = DivisionQueries.divisionsByCountry(cID);
         ObservableList<Division> d =DivisionQueries.associatedDivisions(cID);
         stateComboBox.setItems(d);
         //stateComboBox.setValue(d);

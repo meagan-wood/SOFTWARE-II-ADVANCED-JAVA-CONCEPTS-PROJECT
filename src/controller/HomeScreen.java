@@ -1,5 +1,6 @@
 package controller;
 
+import database.AppointmentQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +43,7 @@ public class HomeScreen implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            appointmentTableView.setItems(appointments());
+            appointmentTableView.setItems(AppointmentQueries.appointments());
             startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
             endTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
             appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
@@ -58,36 +59,6 @@ public class HomeScreen implements Initializable {
         }
     }
 
-
-    public static ObservableList<Appointment> appointments() throws SQLException{
-
-        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-
-        try{
-            String sql = "SELECT * FROM APPOINTMENTS";
-            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
-            ResultSet resultSet = ps.executeQuery();
-
-            while(resultSet.next()){
-                int appointmentId = resultSet.getInt("Appointment_ID");
-                String title = resultSet.getString("Title");
-                String description = resultSet.getString("Description");
-                String location = resultSet.getString("Location");
-                String type = resultSet.getString("Type");
-                LocalDateTime startDateTime = resultSet.getTimestamp("Start").toLocalDateTime();
-                LocalDateTime endDateTime = resultSet.getTimestamp("End").toLocalDateTime();
-                int customerId = resultSet.getInt("Customer_ID");
-                int userId = resultSet.getInt("User_ID");
-                int contactId = resultSet.getInt("Contact_ID");
-                Appointment newAppointment = new Appointment(appointmentId, title, description, location, type, startDateTime, endDateTime, customerId, userId,contactId);
-                appointmentList.add(newAppointment);
-            }
-        }
-        catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        return appointmentList;
-    }
 
     public void onLogoutButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
@@ -124,8 +95,8 @@ public class HomeScreen implements Initializable {
         stage.show();
     }
 
-    public void onModifyAppointmentButton(ActionEvent actionEvent) throws IOException {
-        Appointment a = (Appointment) appointmentTableView.getSelectionModel().getSelectedItem();
+    public void onModifyAppointmentButton(ActionEvent actionEvent) throws IOException, SQLException {
+        Appointment a = appointmentTableView.getSelectionModel().getSelectedItem();
 
         if (a == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
