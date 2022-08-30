@@ -6,19 +6,19 @@
 
 <AnchorPane prefHeight="674.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateAppointment">
    <children>
-      <TableView fx:id="custCreateAppTable" layoutX="49.0" layoutY="109.0" prefHeight="342.0" prefWidth="528.0">
+      <TableView fx:id="custCreateAppTable" layoutX="14.0" layoutY="110.0" prefHeight="342.0" prefWidth="578.0">
         <columns>
-          <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
-          <TableColumn fx:id="phoneColumn" prefWidth="75.0" text="Phone" />
-            <TableColumn fx:id="addressColumn" prefWidth="75.0" text="Address" />
-            <TableColumn fx:id="countryColumn" prefWidth="75.0" text="Country" />
-            <TableColumn fx:id="stateColumn" prefWidth="75.0" text="State" />
-            <TableColumn fx:id="zipcodeColumn" prefWidth="75.0" text="Zip Code" />
+          <TableColumn fx:id="nameColumn" prefWidth="111.0" text="Name" />
+          <TableColumn fx:id="phoneColumn" prefWidth="90.0" text="Phone" />
+            <TableColumn fx:id="addressColumn" prefWidth="93.0" text="Address" />
+            <TableColumn fx:id="countryColumn" prefWidth="63.0" text="Country" />
+            <TableColumn fx:id="stateColumn" prefWidth="86.0" text="State" />
+            <TableColumn fx:id="zipcodeColumn" prefWidth="59.0" text="Zip Code" />
             <TableColumn fx:id="customerIdColumn" prefWidth="75.0" text="CustomerID" />
         </columns>
       </TableView>
-      <Label layoutX="49.0" layoutY="89.0" prefHeight="20.0" prefWidth="279.0" text="Please select a customer to schedule appointment" />
-      <Label layoutX="57.0" layoutY="14.0" text="Create New Appointment">
+      <Label layoutX="14.0" layoutY="86.0" prefHeight="20.0" prefWidth="279.0" text="Please select a customer to schedule appointment" />
+      <Label layoutX="14.0" layoutY="14.0" text="Create New Appointment">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -42,8 +42,8 @@
       <Label layoutX="642.0" layoutY="272.0" text="Type" />
       <TextField fx:id="typeText" layoutX="653.0" layoutY="289.0" />
       <Label layoutX="642.0" layoutY="337.0" text="Start Date " />
-      <Button layoutX="954.0" layoutY="569.0" mnemonicParsing="false" text="Schedule Appointment" />
-      <Button layoutX="859.0" layoutY="569.0" mnemonicParsing="false" onAction="#OnCancelButton" text="Cancel" />
+      <Button layoutX="900.0" layoutY="569.0" mnemonicParsing="false" text="Schedule Appointment" />
+      <Button layoutX="815.0" layoutY="569.0" mnemonicParsing="false" onAction="#OnCancelButton" text="Cancel" />
       <DatePicker fx:id="startDatePicker" layoutX="653.0" layoutY="354.0" />
       <DatePicker fx:id="endDatePicker" layoutX="653.0" layoutY="415.0" />
       <ComboBox fx:id="startTimeComboBox" layoutX="927.0" layoutY="354.0" prefWidth="150.0" />

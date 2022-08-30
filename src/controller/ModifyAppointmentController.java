@@ -48,8 +48,6 @@ public class ModifyAppointmentController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
     }
 
 
@@ -83,10 +81,10 @@ public class ModifyAppointmentController implements Initializable {
         locationText.setText(appointment.getLocation());
         titleText.setText(appointment.getTitle());
         typeText.setText(appointment.getType());
-        //startDatePicker
-        //endDatePicker
-        //startTimeComboBox
-        //endTimeComboBox
+        startDatePicker.setValue(appointment.getStartDateTime().toLocalDate());
+        endDatePicker.setValue(appointment.getEndDateTime().toLocalDate());
+        startTimeComboBox.setValue(appointment.getStartDateTime().toLocalTime());
+        endTimeComboBox.setValue(appointment.getEndDateTime().toLocalTime());
     }
 
     private void startEndTimeCombos() {

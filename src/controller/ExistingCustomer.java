@@ -33,7 +33,7 @@ public class ExistingCustomer implements Initializable {
     public TableColumn<Customer, String> phoneColumn;
     public TableColumn <Customer, String>addressColumn;
     public TableColumn <Country, String>countryColumn;
-    public TableColumn <Division, String>stateColumn;
+    public TableColumn <Customer, String>stateColumn;
     public TableColumn <Customer, String>zipcodeColumn;
     public TableColumn <Customer, Integer>customerIdColumn;
     public TextField nameTextBox;
@@ -61,7 +61,7 @@ public class ExistingCustomer implements Initializable {
             phoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
             addressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
             countryColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("country"));
-            stateColumn.setCellValueFactory(new PropertyValueFactory<Division, String>("division"));
+            stateColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("divisionName"));
             zipcodeColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
             countryComboBox.setItems(CountryQueries.getCountries());
@@ -133,9 +133,7 @@ public class ExistingCustomer implements Initializable {
     public void onCountry(ActionEvent actionEvent) throws SQLException {
 
         int cID = countryComboBox.getValue().getCountryId();
-        //Division d = DivisionQueries.divisionsByCountry(cID);
         ObservableList<Division> d =DivisionQueries.associatedDivisions(cID);
         stateComboBox.setItems(d);
-        //stateComboBox.setValue(d);
     }
 }

@@ -3,6 +3,7 @@ package database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
+import model.Division;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ public class CustomerQueries {
                 int countryId = resultSet.getInt("Country_ID");
                 Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, divisionId, postalCode, customerId, countryId);
                 existingCustomersList.add(newCustomer);
+                System.out.println(division);
             }
         }
         catch (SQLException ex){
@@ -39,5 +41,18 @@ public class CustomerQueries {
     }
 
 
+    public static int insertCustomer(String customerName, String address, String postalCode, String phoneNumber, String division) throws SQLException {
+        Division d = DivisionQueries.divisionsById(division);
+        String sql = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+        ps.setString(1, customerName);
+        ps.setString(2, address);
+        ps.setString(3, postalCode);
+        ps.setString(4, phoneNumber);
+        ps.setInt(5, d.getDivisionId());
+        //ps.setInt(5, Integer.parseInt(division));
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }
 

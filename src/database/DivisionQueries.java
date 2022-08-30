@@ -40,7 +40,6 @@ public class DivisionQueries {
             String sql = "SELECT * FROM first_level_divisions WHERE Country_ID=?";
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ps.setInt(1, countryId);
-            System.out.println(countryId);
             ResultSet resultSet = ps.executeQuery();
 
             while(resultSet.next()){
@@ -62,6 +61,28 @@ public class DivisionQueries {
             String sql = "SELECT * FROM first_level_divisions WHERE Country_ID=?";
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ps.setInt(1, countryId);
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+                Integer divisionId = resultSet.getInt("Division_ID");
+                String divisionName = resultSet.getString("Division");
+                Integer countryID = resultSet.getInt("Country_ID");
+                Division newDivision = new Division(divisionId, divisionName, countryID);
+                return newDivision;
+            }
+        }
+        catch(SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Division divisionsById(String division) throws SQLException{
+
+        try{
+            String sql = "SELECT * FROM first_level_divisions WHERE Division=?";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+            ps.setString(1, division);
             ResultSet resultSet = ps.executeQuery();
 
             while(resultSet.next()){

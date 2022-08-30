@@ -3,8 +3,6 @@ package model;
 
 import database.CountryQueries;
 import database.DivisionQueries;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
 
@@ -85,6 +83,10 @@ public class Customer {
 
     public Division getDivision() throws SQLException {
         return DivisionQueries.divisionsByCountry(countryId);
+        //return division;
+    }
+    public String getDivisionName() throws SQLException {
+        return this.division;
         //return division;
     }
 

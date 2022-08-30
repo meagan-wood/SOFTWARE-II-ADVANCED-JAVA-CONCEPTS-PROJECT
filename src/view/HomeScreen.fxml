@@ -20,16 +20,16 @@
                <children>
                   <TableView fx:id="appointmentTableView" layoutX="17.0" layoutY="76.0" prefHeight="558.0" prefWidth="934.0">
                     <columns>
-                      <TableColumn fx:id="startTimeColumn" editable="false" prefWidth="124.0" text="Start Date/Time" />
-                      <TableColumn fx:id="endTimeColumn" editable="false" prefWidth="109.0" text="End Date/Time" />
-                        <TableColumn fx:id="appointmentIdColumn" editable="false" prefWidth="99.0" text="Appointment ID" />
-                        <TableColumn fx:id="titleColumn" editable="false" prefWidth="78.0" text="Title" />
-                        <TableColumn fx:id="descriptionColumn" editable="false" minWidth="0.0" prefWidth="107.0" text="Description" />
-                        <TableColumn fx:id="locationColumn" editable="false" prefWidth="88.0" text="Location" />
-                        <TableColumn fx:id="contactColumn" editable="false" prefWidth="55.0" text="Contact" />
-                        <TableColumn fx:id="typeColumn" editable="false" prefWidth="118.0" text="Type" />
-                        <TableColumn fx:id="customerIdColumn" editable="false" prefWidth="87.0" text="Customer ID" />
-                        <TableColumn fx:id="userIdColumn" editable="false" prefWidth="68.0" text="User ID" />
+                      <TableColumn fx:id="startTimeColumn" editable="false" prefWidth="143.0" text="Start Date/Time" />
+                      <TableColumn fx:id="endTimeColumn" editable="false" prefWidth="128.0" text="End Date/Time" />
+                        <TableColumn fx:id="appointmentIdColumn" editable="false" prefWidth="104.0" text="Appointment ID" />
+                        <TableColumn fx:id="titleColumn" editable="false" prefWidth="65.0" text="Title" />
+                        <TableColumn fx:id="descriptionColumn" editable="false" minWidth="0.0" prefWidth="77.0" text="Description" />
+                        <TableColumn fx:id="locationColumn" editable="false" prefWidth="76.0" text="Location" />
+                        <TableColumn fx:id="contactColumn" editable="false" prefWidth="107.0" text="Contact" />
+                        <TableColumn fx:id="typeColumn" editable="false" prefWidth="109.0" text="Type" />
+                        <TableColumn fx:id="customerIdColumn" editable="false" prefWidth="75.0" text="Customer ID" />
+                        <TableColumn fx:id="userIdColumn" editable="false" prefWidth="49.0" text="User ID" />
                     </columns>
                   </TableView>
                   <Button layoutX="180.0" layoutY="656.0" mnemonicParsing="false" onAction="#onModifyAppointmentButton" prefHeight="34.0" prefWidth="147.0" text="Modify Appointment" />

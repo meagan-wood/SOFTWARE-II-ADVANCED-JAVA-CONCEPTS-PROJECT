@@ -130,15 +130,7 @@ public class CreateAppointment implements Initializable {
         }
     }
 
-/**public void sendId(Customer customer, int index){
-        this.index = index;
-        customerToModify = customer;
-        newCustomer = customer;
-        customerIdText.setText(String.valueOf(newCustomer.getCustomerId()));
 
-
-
-}**/
     public void selectCustomerButton(ActionEvent actionEvent) {
        Customer c = (Customer) custCreateAppTable.getSelectionModel().getSelectedItem();
             if (c == null){

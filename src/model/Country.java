@@ -28,6 +28,6 @@ public class Country {
 
     @Override
     public String toString(){
-        return(Integer.toString(countryId) + " " + country);
+        return(country);
     }
 }

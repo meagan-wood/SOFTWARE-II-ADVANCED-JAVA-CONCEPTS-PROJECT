@@ -38,6 +38,6 @@ public class Division {
 
     @Override
     public String toString(){
-        return(Integer.toString(divisionId) + " " + division);
+        return (division);
     }
 }
