@@ -31,7 +31,6 @@ public class CustomerQueries {
                 int countryId = resultSet.getInt("Country_ID");
                 Customer newCustomer = new Customer(customerName,phoneNumber, address, country, division, divisionId, postalCode, customerId, countryId);
                 existingCustomersList.add(newCustomer);
-                System.out.println(division);
             }
         }
         catch (SQLException ex){

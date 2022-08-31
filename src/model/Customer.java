@@ -85,6 +85,7 @@ public class Customer {
         return DivisionQueries.divisionsByCountry(countryId);
         //return division;
     }
+
     public String getDivisionName() throws SQLException {
         return this.division;
         //return division;

@@ -44,7 +44,6 @@ public class ExistingCustomer implements Initializable {
     public ComboBox<Country> countryComboBox;
     public ComboBox stateComboBox;
     public TableView existingAppointmentsTable;
-    //public TableColumn <Customer, Integer>divisionIdColumn;
     static ObservableList<Customer> allCustomers;
     public TableColumn startColumn;
     public TableColumn endColumn;

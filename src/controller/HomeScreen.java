@@ -25,6 +25,10 @@ import java.util.ResourceBundle;
 
 public class HomeScreen implements Initializable {
 
+    public ToggleGroup toggleGroup;
+    public RadioButton viewWeekRadio;
+    public RadioButton viewMonthRadio;
+    public RadioButton viewAllRadio;
     @FXML private TableView<Appointment> appointmentTableView;
     @FXML private TableColumn<Appointment, LocalDateTime> startTimeColumn;
     @FXML private TableColumn<Appointment, LocalDateTime> endTimeColumn;
@@ -43,6 +47,7 @@ public class HomeScreen implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
+            viewAllRadio.setSelected(true);
             appointmentTableView.setItems(AppointmentQueries.appointments());
             startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
             endTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
@@ -118,4 +123,45 @@ public class HomeScreen implements Initializable {
         stage.show();
     }
 
+    public void onViewAll(ActionEvent actionEvent) throws SQLException {
+        appointmentTableView.setItems(AppointmentQueries.appointments());
+        startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+        endTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+        appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+    }
+
+    public void onViewWeek(ActionEvent actionEvent) throws SQLException {
+        appointmentTableView.setItems(AppointmentQueries.appointmentsByWeek());
+        startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+        endTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+        appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+    }
+
+    public void onViewMonth(ActionEvent actionEvent) throws SQLException {
+        appointmentTableView.setItems(AppointmentQueries.appointmentsByMonth());
+        startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+        endTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+        appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
+        userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+    }
 }
