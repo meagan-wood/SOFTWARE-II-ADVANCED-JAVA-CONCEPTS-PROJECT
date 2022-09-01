@@ -39,7 +39,7 @@
       <Label layoutX="1008.0" layoutY="59.0" prefHeight="17.0" prefWidth="68.0" text="CustomerID" />
       <ComboBox fx:id="countryComboBox" layoutX="765.0" layoutY="222.0" onAction="#onCountry" prefWidth="145.0" />
       <ComboBox fx:id="stateComboBox" layoutX="1048.0" layoutY="222.0" prefHeight="25.0" prefWidth="131.0" />
-      <Button layoutX="1042.0" layoutY="626.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="137.0" text="Update Information" />
+      <Button layoutX="1042.0" layoutY="626.0" mnemonicParsing="false" onAction="#onUpdate" prefHeight="25.0" prefWidth="137.0" text="Update Information" />
       <Label layoutX="721.0" layoutY="109.0" prefHeight="17.0" prefWidth="43.0" text="Name" />
       <Label layoutX="969.0" layoutY="109.0" prefHeight="17.0" prefWidth="43.0" text="Phone" />
       <Label layoutX="721.0" layoutY="167.0" text="Address" />

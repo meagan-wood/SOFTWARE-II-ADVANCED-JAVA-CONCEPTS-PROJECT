@@ -112,7 +112,8 @@ public class ExistingCustomer implements Initializable {
                 postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
                 idTextBox.setText(String.valueOf(c.getCustomerId()));
                 countryComboBox.setValue(c.getCountry());
-                stateComboBox.setValue(c.getDivision());
+                stateComboBox.setValue(c.getDivisionName());
+
             }
             catch (Exception e){
             e.printStackTrace();
@@ -134,5 +135,45 @@ public class ExistingCustomer implements Initializable {
         int cID = countryComboBox.getValue().getCountryId();
         ObservableList<Division> d =DivisionQueries.associatedDivisions(cID);
         stateComboBox.setItems(d);
+    }
+
+
+    public void onUpdate(ActionEvent actionEvent) {
+        if(nameTextBox.getText().isEmpty() || addressTextBox.getText().isEmpty() || postalCodeTextBox.getText().isEmpty() || phoneTextBox.getText().isEmpty() || stateComboBox.getValue() == null){
+            Alert alert3 = new Alert (Alert.AlertType.ERROR);
+            alert3.setTitle("ERROR");
+            alert3.setHeaderText((null));
+            alert3.setContentText("All boxes must be filled before you can save.");
+            Optional<ButtonType> result = alert3.showAndWait();
+        }
+        else {
+            try{
+                int rowsAffected = CustomerQueries.updateCustomer(Integer.parseInt(idTextBox.getText()), nameTextBox.getText(), addressTextBox.getText(), postalCodeTextBox.getText(), phoneTextBox.getText(), stateComboBox.getValue().toString());
+                if(rowsAffected >0){
+
+                    Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
+                    alert3.setTitle("Confirmation");
+                    alert3.setHeaderText((null));
+                    alert3.setContentText("Updates applied.");
+                    Optional<ButtonType> result = alert3.showAndWait();
+                    if (alert3.getResult() == ButtonType.OK) {
+                        Parent root = FXMLLoader.load(getClass().getResource("/view/ExistingCustomer.FXML"));
+                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                    }
+                }
+                else{
+                    Alert alert2 = new Alert (Alert.AlertType.ERROR);
+                    alert2.setTitle("ERROR");
+                    alert2.setHeaderText((null));
+                    alert2.setContentText("Error updating customer.");
+                    Optional<ButtonType> result = alert2.showAndWait();
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
