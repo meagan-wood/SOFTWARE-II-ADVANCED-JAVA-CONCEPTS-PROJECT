@@ -33,7 +33,7 @@
                     </columns>
                   </TableView>
                   <Button layoutX="180.0" layoutY="656.0" mnemonicParsing="false" onAction="#onModifyAppointmentButton" prefHeight="34.0" prefWidth="147.0" text="Modify Appointment" />
-                  <Button layoutX="634.0" layoutY="656.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="147.0" text="Delete Appointment" />
+                  <Button layoutX="634.0" layoutY="656.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="34.0" prefWidth="147.0" text="Delete Appointment" />
                   <RadioButton fx:id="viewAllRadio" layoutX="83.0" layoutY="35.0" mnemonicParsing="false" onAction="#onViewAll" prefHeight="34.0" prefWidth="108.0" selected="true" text="View All">
                      <toggleGroup>
                         <ToggleGroup fx:id="toggleGroup" />

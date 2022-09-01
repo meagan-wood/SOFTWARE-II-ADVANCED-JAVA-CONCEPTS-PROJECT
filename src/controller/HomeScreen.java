@@ -1,6 +1,7 @@
 package controller;
 
 import database.AppointmentQueries;
+import database.CustomerQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -163,5 +164,59 @@ public class HomeScreen implements Initializable {
         typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
         userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+    }
+
+    public void onDelete(ActionEvent actionEvent) throws IOException {
+        Appointment a = appointmentTableView.getSelectionModel().getSelectedItem();
+
+        if(a != null){
+            Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
+            alert3.setTitle("Confirmation");
+            alert3.setHeaderText((null));
+            alert3.setContentText("Are you sure you want to delete this appointment?");
+            Optional<ButtonType> result = alert3.showAndWait();
+            if (alert3.getResult() == ButtonType.OK) {
+                try{
+                    int rowsAffected = AppointmentQueries.deleteAppointment(a.getAppointmentId());
+                    if(rowsAffected >0){
+                        Alert alert2 = new Alert (Alert.AlertType.INFORMATION);
+                        alert2.setTitle("Confirmation");
+                        alert2.setHeaderText((null));
+                        alert2.setContentText("Appointment Id '"+ a.getAppointmentId()+" ' for '" +a.getType()+" ' has been deleted.");
+                        Optional<ButtonType> result1 = alert2.showAndWait();
+                        if (alert3.getResult() == ButtonType.OK) {
+                            Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));
+                            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                            stage.setScene(new Scene(root));
+                            stage.show();
+                        }
+                    }
+                    else{
+                        Alert alert2 = new Alert (Alert.AlertType.ERROR);
+                        alert2.setTitle("ERROR");
+                        alert2.setHeaderText((null));
+                        alert2.setContentText("Unable to delete appointment at this time.");
+                        Optional<ButtonType> result2 = alert2.showAndWait();
+                        if (alert3.getResult() == ButtonType.OK) {
+                            Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));
+                            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                            stage.setScene(new Scene(root));
+                            stage.show();
+                        }
+                    }
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Select appointment");
+            alert.setContentText("Please select an appointment to delete");
+            alert.showAndWait();
+        }
     }
 }

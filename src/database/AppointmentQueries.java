@@ -139,5 +139,11 @@ public class AppointmentQueries {
             return appointmentWeek;
     }
 
-
+    public static int deleteAppointment(int appointmentId) throws SQLException {
+        String sql = "DELETE FROM APPOINTMENTS WHERE Appointment_ID=?";
+        PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, appointmentId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }

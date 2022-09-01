@@ -42,7 +42,6 @@ public class CustomerQueries {
 
     public static int insertCustomer(String customerName, String address, String postalCode, String phoneNumber, String division) throws SQLException {
         Division d = DivisionQueries.divisionsById(division);
-        System.out.println(DivisionQueries.divisionsById(division));
         String sql = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
         ps.setString(1, customerName);
@@ -57,7 +56,6 @@ public class CustomerQueries {
 
     public static int updateCustomer(int customerId, String customerName, String address, String postalCode, String phoneNumber, String divisionName) throws SQLException {
         Division d = DivisionQueries.divisionsById(divisionName);
-        System.out.println(DivisionQueries.divisionsById(divisionName));
         String sql = "UPDATE CUSTOMERS SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Division_ID=? WHERE Customer_ID=?";
         PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
         ps.setString(1, customerName);

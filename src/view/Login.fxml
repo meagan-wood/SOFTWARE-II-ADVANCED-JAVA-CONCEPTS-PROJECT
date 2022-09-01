@@ -17,6 +17,6 @@
       <Label fx:id="passwordLabel" layoutX="45.0" layoutY="192.0" text="Password:" />
       <Button fx:id="cancelButton" layoutX="77.0" layoutY="280.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />
       <Button fx:id="enterButton" layoutX="173.0" layoutY="280.0" mnemonicParsing="false" onAction="#onEnterButton" prefHeight="25.0" prefWidth="52.0" text="Enter" />
-      <Label fx:id="timeZoneLabel" layoutX="14.0" layoutY="369.0" prefHeight="17.0" prefWidth="80.0" text="Location" textAlignment="CENTER" />
+      <Label fx:id="timeZoneLabel" layoutX="14.0" layoutY="369.0" prefHeight="17.0" prefWidth="121.0" text="Location" textAlignment="CENTER" />
    </children>
 </AnchorPane>

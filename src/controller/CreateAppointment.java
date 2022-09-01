@@ -64,7 +64,7 @@ public class CreateAppointment implements Initializable {
             phoneColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("phoneNumber"));
             addressColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("address"));
             countryColumn.setCellValueFactory(new PropertyValueFactory<Country, String>("country"));
-            stateColumn.setCellValueFactory(new PropertyValueFactory<Division, String>("division"));
+            stateColumn.setCellValueFactory(new PropertyValueFactory<Division, String>("divisionName"));
             zipcodeColumn.setCellValueFactory(new PropertyValueFactory<Customer, String>("postalCode"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
             //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
