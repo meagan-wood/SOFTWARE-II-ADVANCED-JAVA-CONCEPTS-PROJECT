@@ -67,5 +67,13 @@ public class CustomerQueries {
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }
+
+    public static int deleteCustomer(int customerId) throws SQLException{
+        String sql = "DELETE FROM CUSTOMERS WHERE Customer_ID=?";
+        PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, customerId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
 }
 

@@ -23,7 +23,7 @@
          </font>
       </Label>
       <Button layoutX="255.0" layoutY="484.0" mnemonicParsing="false" onAction="#onEditCustomerButton" prefHeight="25.0" prefWidth="137.0" text="Edit Customer" />
-      <Button layoutX="494.0" layoutY="484.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="137.0" text="Delete Customer" />
+      <Button layoutX="494.0" layoutY="484.0" mnemonicParsing="false" onAction="#onDeleteCustomer" prefHeight="25.0" prefWidth="137.0" text="Delete Customer" />
       <Label layoutX="699.0" layoutY="56.0" prefHeight="17.0" prefWidth="203.0" text="Update Customer Information">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -57,6 +57,6 @@
         </columns>
       </TableView>
       <Label layoutX="721.0" layoutY="290.0" text="Existing Appointments" />
-      <Button layoutX="1056.0" layoutY="484.0" mnemonicParsing="false" onAction="#onDelete" text="Delete Appointment" />
+      <Button layoutX="1056.0" layoutY="484.0" mnemonicParsing="false" onAction="#onDeleteAppointment" text="Delete Appointment" />
    </children>
 </AnchorPane>

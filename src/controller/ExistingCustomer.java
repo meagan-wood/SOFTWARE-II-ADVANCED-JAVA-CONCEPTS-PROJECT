@@ -68,7 +68,6 @@ public class ExistingCustomer implements Initializable {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-
     }
 
 
@@ -94,8 +93,8 @@ public class ExistingCustomer implements Initializable {
     }
 
     public void onEditCustomerButton(ActionEvent actionEvent) {
-
         Customer c =  existingCustomersTable.getSelectionModel().getSelectedItem();
+
         if(c !=null){
             try{
                 Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
@@ -113,7 +112,6 @@ public class ExistingCustomer implements Initializable {
                 idTextBox.setText(String.valueOf(c.getCustomerId()));
                 countryComboBox.setValue(c.getCountry());
                 stateComboBox.setValue(c.getDivisionName());
-
             }
             catch (Exception e){
             e.printStackTrace();
@@ -177,7 +175,7 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
-    public void onDelete(ActionEvent actionEvent) {
+    public void onDeleteAppointment(ActionEvent actionEvent) {
         Appointment a = (Appointment) existingAppointmentsTable.getSelectionModel().getSelectedItem();
 
         if(a != null){
@@ -229,4 +227,84 @@ public class ExistingCustomer implements Initializable {
             alert.showAndWait();
         }
     }
+
+    public void onDeleteCustomer(ActionEvent actionEvent) throws SQLException {
+        Customer c = existingCustomersTable.getSelectionModel().getSelectedItem();
+
+        if(c != null){
+            Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
+            alert3.setTitle("Confirmation");
+            alert3.setHeaderText((null));
+            alert3.setContentText("Are you sure you want to delete "+ c.getCustomerName() +"?");
+                    //("Are you sure you want to delete this customer?");
+            Optional<ButtonType> result = alert3.showAndWait();
+            if (alert3.getResult() == ButtonType.OK) {
+                Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
+                ObservableList<Appointment> aAppointments = AppointmentQueries.associatedApointments(cID);
+                if(aAppointments.isEmpty()){
+                    try{
+                        int rowsAffected = CustomerQueries.deleteCustomer(c.getCustomerId());
+                        if(rowsAffected >0){
+                            Alert alert2 = new Alert (Alert.AlertType.INFORMATION);
+                            alert2.setTitle("Confirmation");
+                            alert2.setHeaderText((null));
+                            alert2.setContentText("Customer '"+ c.getCustomerName() +"' has been deleted.");
+                            Optional<ButtonType> result1 = alert2.showAndWait();
+                            if (alert3.getResult() == ButtonType.OK) {
+                                Parent root = FXMLLoader.load(getClass().getResource("/view/ExistingCustomer.FXML"));
+                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            }
+                        }
+                        else{
+                            Alert alert2 = new Alert (Alert.AlertType.ERROR);
+                            alert2.setTitle("ERROR");
+                            alert2.setHeaderText((null));
+                            alert2.setContentText("Unable to delete customer at this time.");
+                            Optional<ButtonType> result2 = alert2.showAndWait();
+                            if (alert2.getResult() == ButtonType.OK) {
+                                Parent root = FXMLLoader.load(getClass().getResource("/view/ExistingCustomer.FXML"));
+                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            }
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                    alert2.setTitle("ERROR: EXISTING APPOINTMENTS");
+                    alert2.setHeaderText((null));
+                    alert2.setContentText("Cannot delete customer with existing appointments");
+                    Optional<ButtonType> result2 = alert2.showAndWait();
+
+                    existingAppointmentsTable.setItems(aAppointments);
+                    startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+                    endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+                    locationColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("location"));
+                    contactColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("contactId"));
+                    typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+                    nameTextBox.setText(c.getCustomerName());
+                    phoneTextBox.setText(String.valueOf(c.getPhoneNumber()));
+                    addressTextBox.setText(c.getAddress());
+                    postalCodeTextBox.setText(String.valueOf(c.getPostalCode()));
+                    idTextBox.setText(String.valueOf(c.getCustomerId()));
+                    countryComboBox.setValue(c.getCountry());
+                    stateComboBox.setValue(c.getDivisionName());
+                }
+            }
+        }
+        else{Alert alert2 = new Alert (Alert.AlertType.ERROR);
+            alert2.setTitle("ERROR");
+            alert2.setHeaderText((null));
+            alert2.setContentText("Please select a customer to delete");
+            Optional<ButtonType> result2 = alert2.showAndWait();
+        }
+    }
+
+
 }

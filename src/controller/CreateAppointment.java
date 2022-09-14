@@ -81,7 +81,7 @@ public class CreateAppointment implements Initializable {
 
     private void startEndTimeCombos(){
         ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
-        LocalTime start = LocalTime.of(8, 0);
+        LocalTime start = LocalTime.of(8, 0) ;
         LocalTime end = LocalTime.of(22, 0);
         schedulingTimes.add(start.toString());
         while(start.isBefore(end)){
@@ -93,6 +93,10 @@ public class CreateAppointment implements Initializable {
 
         /*ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
 
+        ZoneOffset zone = ZoneOffset.of("America/New_York").getRules().getOffset(8, );
+        OffsetTime start = LocalTime.now().atOffset(zone);
+        //ZoneOffset zoneOffset = zone.getRules().getOffset(Instant.from(start));
+        //OffsetTime end = LocalTime.of(22,0).atOffset(zone);
         LocalTime start = LocalTime.of(8, 0);
         //ZoneId zone = ZoneId.of("America/New_York");
         //start.atOffset(zone.getRules().getOffset(LocalDateTime.now(ZoneId.of("America/New_York"))));
@@ -144,5 +148,8 @@ public class CreateAppointment implements Initializable {
             else{
                 customerIdText.setText(String.valueOf(c.getCustomerId()));
             }
+    }
+
+    public void onScheduleAppointment(ActionEvent actionEvent) {
     }
 }

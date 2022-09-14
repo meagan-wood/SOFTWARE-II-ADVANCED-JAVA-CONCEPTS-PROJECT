@@ -7,6 +7,7 @@ import model.Appointment;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class AppointmentQueries {
@@ -15,7 +16,8 @@ public class AppointmentQueries {
         ObservableList customerAppointments = FXCollections.observableArrayList();
 
         try{
-            String sql = "SELECT * FROM APPOINTMENTS AS a INNER JOIN customers AS c ON a.Customer_ID=c.Customer_ID WHERE a.Customer_ID=?";
+            String sql = "SELECT * FROM APPOINTMENTS WHERE customer_ID = ?";
+            //String sql = "SELECT * FROM APPOINTMENTS AS a INNER JOIN customers AS c ON a.Customer_ID=c.Customer_ID WHERE a.Customer_ID=?";
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ps.setInt(1, CustomerId);
             ResultSet resultSet = ps.executeQuery();
@@ -143,6 +145,22 @@ public class AppointmentQueries {
         String sql = "DELETE FROM APPOINTMENTS WHERE Appointment_ID=?";
         PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
         ps.setInt(1, appointmentId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
+
+    public static int insertAppointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) throws SQLException{
+        String sql = "INSERT INTO APPOINTMENTS(Title, Description, Location, Type, Start, End, Customer_ID, Uer_ID, Contact_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+        ps.setString(1, title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+        ps.setTimestamp(5, Timestamp.valueOf(start));
+        ps.setTimestamp(6, Timestamp.valueOf(end));
+        ps.setInt(7, customerId);
+        ps.setInt(8, userId);
+        ps.setInt(9, contactId);
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }

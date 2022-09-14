@@ -24,31 +24,35 @@
          </font>
       </Label>
       <Button layoutX="452.0" layoutY="458.0" mnemonicParsing="false" onAction="#selectCustomerButton" text="Select Customer" />
-      <TextField fx:id="customerIdText" editable="false" layoutX="927.0" layoutY="106.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="customerIdText" editable="false" layoutX="927.0" layoutY="106.0" prefHeight="25.0" prefWidth="149.0" promptText="Select a customer " />
       <TextField fx:id="descriptionText" layoutX="927.0" layoutY="164.0" prefHeight="25.0" prefWidth="149.0" />
       <TextField fx:id="userIdText" layoutX="927.0" layoutY="289.0" prefHeight="25.0" prefWidth="149.0" />
       <Label layoutX="915.0" layoutY="87.0" text="Customer ID" />
       <Label layoutX="915.0" layoutY="147.0" text="Description" />
       <Label layoutX="915.0" layoutY="272.0" text="UserID" />
       <ComboBox fx:id="contactNameComboBox" layoutX="927.0" layoutY="224.0" prefHeight="25.0" prefWidth="149.0" />
-      <TextField fx:id="appointmentIdText" editable="false" layoutX="653.0" layoutY="106.0" />
+      <TextField fx:id="appointmentIdText" editable="false" layoutX="653.0" layoutY="106.0" promptText="Auto generated" />
       <Label layoutX="641.0" layoutY="87.0" text="Appointment ID" />
       <Label layoutX="642.0" layoutY="147.0" text="Title" />
       <Label layoutX="642.0" layoutY="207.0" text="Location" />
       <TextField fx:id="locationText" layoutX="653.0" layoutY="224.0" prefHeight="25.0" prefWidth="149.0" />
       <TextField fx:id="titleText" layoutX="653.0" layoutY="164.0" />
-      <Label layoutX="642.0" layoutY="398.0" text="End Date " />
+      <Label layoutX="642.0" layoutY="407.0" text="End Date " />
       <Label layoutX="915.0" layoutY="207.0" text="Contact Name" />
       <Label layoutX="642.0" layoutY="272.0" text="Type" />
       <TextField fx:id="typeText" layoutX="653.0" layoutY="289.0" />
-      <Label layoutX="642.0" layoutY="337.0" text="Start Date " />
-      <Button layoutX="900.0" layoutY="569.0" mnemonicParsing="false" text="Schedule Appointment" />
+      <Label layoutX="640.0" layoutY="346.0" text="Start Date " />
+      <Button layoutX="900.0" layoutY="569.0" mnemonicParsing="false" onAction="#onScheduleAppointment" text="Schedule Appointment" />
       <Button layoutX="815.0" layoutY="569.0" mnemonicParsing="false" onAction="#OnCancelButton" text="Cancel" />
-      <DatePicker fx:id="startDatePicker" layoutX="653.0" layoutY="354.0" />
-      <DatePicker fx:id="endDatePicker" layoutX="653.0" layoutY="415.0" />
-      <ComboBox fx:id="startTimeComboBox" layoutX="927.0" layoutY="354.0" prefWidth="150.0" />
-      <ComboBox fx:id="endTimeComboBox" layoutX="927.0" layoutY="415.0" prefWidth="150.0" />
-      <Label layoutX="915.0" layoutY="337.0" text="Start Time" />
-      <Label layoutX="915.0" layoutY="398.0" text="End Time" />
+      <DatePicker fx:id="startDatePicker" layoutX="653.0" layoutY="367.0" />
+      <DatePicker fx:id="endDatePicker" layoutX="653.0" layoutY="428.0" />
+      <ComboBox fx:id="startTimeComboBox" layoutX="927.0" layoutY="367.0" prefWidth="150.0" />
+      <ComboBox fx:id="endTimeComboBox" layoutX="927.0" layoutY="428.0" prefWidth="150.0" />
+      <Label layoutX="915.0" layoutY="346.0" text="Start Time" />
+      <Label layoutX="917.0" layoutY="407.0" text="End Time" />
+      <Label layoutX="669.0" layoutY="320.0" prefHeight="17.0" prefWidth="375.0" text="Appointments can be scheduled Monday - Friday 8:00 a.m. to 10:00 p.m. EST " textAlignment="CENTER" textFill="#000000c5">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
    </children>
 </AnchorPane>
