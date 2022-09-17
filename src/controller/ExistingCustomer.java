@@ -236,7 +236,6 @@ public class ExistingCustomer implements Initializable {
             alert3.setTitle("Confirmation");
             alert3.setHeaderText((null));
             alert3.setContentText("Are you sure you want to delete "+ c.getCustomerName() +"?");
-                    //("Are you sure you want to delete this customer?");
             Optional<ButtonType> result = alert3.showAndWait();
             if (alert3.getResult() == ButtonType.OK) {
                 Integer cID = existingCustomersTable.getSelectionModel().getSelectedItem().getCustomerId();
@@ -250,7 +249,7 @@ public class ExistingCustomer implements Initializable {
                             alert2.setHeaderText((null));
                             alert2.setContentText("Customer '"+ c.getCustomerName() +"' has been deleted.");
                             Optional<ButtonType> result1 = alert2.showAndWait();
-                            if (alert3.getResult() == ButtonType.OK) {
+                            if (alert2.getResult() == ButtonType.OK) {
                                 Parent root = FXMLLoader.load(getClass().getResource("/view/ExistingCustomer.FXML"));
                                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                                 stage.setScene(new Scene(root));

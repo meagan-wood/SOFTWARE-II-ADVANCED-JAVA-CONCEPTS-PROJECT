@@ -14,10 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Contact;
-import model.Country;
-import model.Customer;
-import model.Division;
+import model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -81,7 +79,7 @@ public class CreateAppointment implements Initializable {
 
     private void startEndTimeCombos(){
         ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
-        LocalTime start = LocalTime.of(8, 0) ;
+        LocalTime start = LocalTime.of(4, 0) ;
         LocalTime end = LocalTime.of(22, 0);
         schedulingTimes.add(start.toString());
         while(start.isBefore(end)){
@@ -107,13 +105,6 @@ public class CreateAppointment implements Initializable {
         //LocalTime st = ZoneOffset.of("America/New_York").
         System.out.println(end);
 
-        schedulingTimes.add(start.toString());
-        while(start.isBefore(LocalTime.from(end))){
-            start = start.plusMinutes(30);
-            schedulingTimes.add(start.toString());
-        }
-        startTimeComboBox.setItems(schedulingTimes);
-        endTimeComboBox.setItems(schedulingTimes);
 */
     }
 
@@ -151,5 +142,86 @@ public class CreateAppointment implements Initializable {
     }
 
     public void onScheduleAppointment(ActionEvent actionEvent) {
+
+        boolean timesValid = checkWithinBusinessHours();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText("Appointment times");
+        if(timesValid){
+            alert.setContentText("Times are valid");
+
+        } else{
+            alert.setContentText("Times are not within business hours");
+
+        }
+        alert.showAndWait();
     }
+
+    private boolean checkWithinBusinessHours() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        ZoneId systemZoneId = ZoneId.systemDefault();
+        System.out.println(systemZoneId + " DefaultZone");
+
+        LocalDate startDate = startDatePicker.getValue();
+        System.out.println(startDate + " StartDatePicker");
+        LocalDate endDate = endDatePicker.getValue();
+        System.out.println(endDate + " EndDatePicker");
+
+        LocalTime startTime = LocalTime.parse((CharSequence) startTimeComboBox.getSelectionModel().getSelectedItem());
+        System.out.println(startTime + " startTime");
+        LocalTime endTime = LocalTime.parse((CharSequence) endTimeComboBox.getSelectionModel().getSelectedItem(), formatter);
+        System.out.println(endTime + " endTime");
+        //LocalTime startTime = (LocalTime) startTimeComboBox.getSelectionModel().getSelectedItem(); //LocalTime.parse();
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        System.out.println(startDateTime + " StartDateTime");
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        System.out.println(endDateTime + " EndDateTime");
+
+        ZonedDateTime estStartTime = startDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
+        System.out.println(estStartTime + " EstStartTime");
+        ZonedDateTime estEndTime = endDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
+        System.out.println(estEndTime + " EstEndTime");
+
+
+        if (estStartTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID START TIME");
+            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (estStartTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID START TIME");
+            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (estEndTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID END TIME");
+            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
+            alert.showAndWait();
+            return false;
+        }
+
+        if (estEndTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID END TIME");
+            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
+
 }
