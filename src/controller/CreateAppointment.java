@@ -185,6 +185,41 @@ public class CreateAppointment implements Initializable {
         System.out.println(estEndTime + " EstEndTime");
 
 
+        if(startDatePicker.getValue().isBefore(endDatePicker.getValue()) || startDatePicker.getValue().isAfter(endDatePicker.getValue())){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID DATES");
+            alert.setContentText("Start date and end date must be the same");
+            alert.showAndWait();
+            return false;
+        }
+        if(startDatePicker.getValue().isBefore(LocalDate.now())){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID DATES");
+            alert.setContentText("You cannot schedule appointments for days that have passed");
+            alert.showAndWait();
+            return false;
+        }
+
+        if(startTime.isAfter(endTime)){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID TIMES");
+            alert.setContentText("Start time must be before end time");
+            alert.showAndWait();
+            return false;
+        }
+
+        if(startTime == endTime){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID TIMES");
+            alert.setContentText("Start time cannot be the same as end time");
+            alert.showAndWait();
+            return false;
+        }
+
         if (estStartTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
