@@ -141,28 +141,29 @@ public class CreateAppointment implements Initializable {
 
     public void onScheduleAppointment(ActionEvent actionEvent) throws SQLException {
         boolean noBlankFields = checkValidEntries();
-
         if(noBlankFields){
-            boolean noOverlapCustomer = checkSchedulingConflicts();
-            if(noOverlapCustomer){
-                boolean timesValid = checkWithinBusinessHours();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText("Appointment times");
-                if (timesValid) {
-                    alert.setContentText("Times are valid");
-                } else {
-                    alert.setContentText("Times are not within business hours");
-                }
-                alert.showAndWait();
+            boolean timesValid = checkWithinBusinessHours();
+            if(timesValid){
+                boolean noOverlapCustomer = checkSchedulingConflicts();
 
+                if (noOverlapCustomer){
+
+
+
+                } else {
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                    alert2.setTitle("Error");
+                    alert2.setHeaderText("OVERLAP");
+                    alert2.setContentText("Customer already has appointment during this time");
+                    alert2.showAndWait();
+                }
             }
             else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("OVERLAP");
-                alert.setContentText("");
-                alert.showAndWait();
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("Invalid Appointment");
+                alert2.setContentText("Appointment must be scheduled Monday-Friday 8AM-10PM EST.");
+                alert2.showAndWait();
             }
         }
         else{
@@ -236,7 +237,7 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-        if(startTime == endTime){
+        if(startTime.equals(endTime)){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("INVALID TIMES");
@@ -284,7 +285,7 @@ public class CreateAppointment implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("NO CUSTOMER SELECTED");
-            alert.setContentText("Please select a customer from the table to schedule an appointment for.");
+            alert.setContentText("Please select the customer from the table to schedule an appointment for.");
             alert.showAndWait();
             return false;
         }
@@ -394,22 +395,27 @@ public class CreateAppointment implements Initializable {
             existingAppointmentEnd = appointment.getEndDateTime();
             System.out.println(" - " + existingAppointmentEnd + " ExistingEndDT");
             if(newStartDT.isAfter(existingAppointmentStart) && newStartDT.isBefore(existingAppointmentEnd)){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                /*Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("1: SCHEDULING CONFLICT");
                 alert.setContentText("Customer already has an appointment during that time.");
                 alert.showAndWait();
+
+                 */
                 return false;
             }
             else if(newEndDT.isAfter(existingAppointmentStart) && newEndDT.isBefore(existingAppointmentEnd)){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
+                /*Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("2: SCHEDULING CONFLICT");
                 alert.setContentText("Customer already has an appointment during that time.");
                 alert.showAndWait();
+
+                 */
                 return false;
             }
         }
+
         return true;
     }
 
