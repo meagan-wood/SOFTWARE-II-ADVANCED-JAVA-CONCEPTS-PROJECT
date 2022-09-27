@@ -208,7 +208,7 @@ public class CreateAppointment implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("INVALID DATES");
-            alert.setContentText("Business hours are only Monday-Friday");
+            alert.setContentText("Appointments can only be scheduled Monday-Friday");
             alert.showAndWait();
             return false;
         }
@@ -224,7 +224,7 @@ public class CreateAppointment implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("INVALID DATES");
-            alert.setContentText("You cannot schedule appointments for days that have passed");
+            alert.setContentText("You cannot schedule appointments for dates prior to today.");
             alert.showAndWait();
             return false;
         }
@@ -372,19 +372,44 @@ public class CreateAppointment implements Initializable {
     }
 
     boolean checkSchedulingConflicts() throws SQLException {
-        int customerId = Integer.parseInt(customerIdText.getText());
-        ObservableList customerAppointments = AppointmentQueries.associatedApointments(customerId);
-        System.out.println(customerAppointments);
-        if(!customerAppointments.isEmpty()) {
-            System.out.println("CustomerHasAppointments");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("CUSTOMER HAS APPOINTMENTS SCHEDULED");
-            alert.setContentText("");
-            alert.showAndWait();
-            return false;
-        }
+        LocalTime newStartTime = LocalTime.parse((CharSequence) startTimeComboBox.getValue());
+        LocalTime newEndTime = LocalTime.parse((CharSequence) endTimeComboBox.getValue());
 
+        LocalDate newStartDate = startDatePicker.getValue();
+        LocalDate newEndDate = endDatePicker.getValue();
+
+        LocalDateTime newStartDT = LocalDateTime.of(newStartDate, newStartTime);
+        LocalDateTime newEndDT = LocalDateTime.of(newEndDate, newEndTime);
+        System.out.println(newStartDT +" - " + newEndDT + "  newStart/End DT");
+
+        int customerId = Integer.parseInt(customerIdText.getText());
+        ObservableList<Appointment> customerAppointments = AppointmentQueries.associatedApointments(customerId);
+        System.out.println(customerAppointments);
+        LocalDateTime existingAppointmentStart;
+        LocalDateTime existingAppointmentEnd;
+        for(Appointment appointment: customerAppointments){
+            System.out.println(appointment + "appointment/customerAppointments");
+            existingAppointmentStart = appointment.getStartDateTime();
+            System.out.println(" - " + existingAppointmentStart + " ExistingStartDT" );
+            existingAppointmentEnd = appointment.getEndDateTime();
+            System.out.println(" - " + existingAppointmentEnd + " ExistingEndDT");
+            if(newStartDT.isAfter(existingAppointmentStart) && newStartDT.isBefore(existingAppointmentEnd)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("1: SCHEDULING CONFLICT");
+                alert.setContentText("Customer already has an appointment during that time.");
+                alert.showAndWait();
+                return false;
+            }
+            else if(newEndDT.isAfter(existingAppointmentStart) && newEndDT.isBefore(existingAppointmentEnd)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("2: SCHEDULING CONFLICT");
+                alert.setContentText("Customer already has an appointment during that time.");
+                alert.showAndWait();
+                return false;
+            }
+        }
         return true;
     }
 
