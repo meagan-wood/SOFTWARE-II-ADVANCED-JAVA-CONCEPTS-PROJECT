@@ -1,5 +1,6 @@
 package controller;
 
+import database.AppointmentQueries;
 import database.ContactQueries;
 import database.CustomerQueries;
 import javafx.beans.Observable;
@@ -22,7 +23,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
+import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -49,9 +53,6 @@ public class CreateAppointment implements Initializable {
     public ComboBox startTimeComboBox;
     public ComboBox endTimeComboBox;
 
-    private int index;
-    Customer customerToModify = null;
-    //private Customer newCustomer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -68,13 +69,11 @@ public class CreateAppointment implements Initializable {
             //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
             contactNameComboBox.setItems(ContactQueries.contacts());
             startEndTimeCombos();
-
-        } catch (SQLException throwable) {
+        }
+        catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-
     }
-
 
 
     private void startEndTimeCombos(){
@@ -110,7 +109,6 @@ public class CreateAppointment implements Initializable {
 
 
 
-
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
         alert3.setTitle("Confirmation");
@@ -141,21 +139,41 @@ public class CreateAppointment implements Initializable {
             }
     }
 
-    public void onScheduleAppointment(ActionEvent actionEvent) {
+    public void onScheduleAppointment(ActionEvent actionEvent) throws SQLException {
+        boolean noBlankFields = checkValidEntries();
 
-        boolean timesValid = checkWithinBusinessHours();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText("Appointment times");
-        if(timesValid){
-            alert.setContentText("Times are valid");
+        if(noBlankFields){
+            boolean noOverlapCustomer = checkSchedulingConflicts();
+            if(noOverlapCustomer){
+                boolean timesValid = checkWithinBusinessHours();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information");
+                alert.setHeaderText("Appointment times");
+                if (timesValid) {
+                    alert.setContentText("Times are valid");
+                } else {
+                    alert.setContentText("Times are not within business hours");
+                }
+                alert.showAndWait();
 
-        } else{
-            alert.setContentText("Times are not within business hours");
-
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("OVERLAP");
+                alert.setContentText("");
+                alert.showAndWait();
+            }
         }
-        alert.showAndWait();
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("BLANK FIELDS");
+            alert.setContentText("Please make sure all boxes have entries");
+            alert.showAndWait();
+        }
     }
+
 
     private boolean checkWithinBusinessHours() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -172,7 +190,6 @@ public class CreateAppointment implements Initializable {
         System.out.println(startTime + " startTime");
         LocalTime endTime = LocalTime.parse((CharSequence) endTimeComboBox.getSelectionModel().getSelectedItem(), formatter);
         System.out.println(endTime + " endTime");
-        //LocalTime startTime = (LocalTime) startTimeComboBox.getSelectionModel().getSelectedItem(); //LocalTime.parse();
 
         LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
         System.out.println(startDateTime + " StartDateTime");
@@ -184,7 +201,17 @@ public class CreateAppointment implements Initializable {
         ZonedDateTime estEndTime = endDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
         System.out.println(estEndTime + " EstEndTime");
 
+        DayOfWeek dWeek = startDatePicker.getValue().getDayOfWeek();
+        System.out.println(dWeek + " DayOfWeek");
 
+        if(dWeek == DayOfWeek.SATURDAY || dWeek == DayOfWeek.SUNDAY){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("INVALID DATES");
+            alert.setContentText("Business hours are only Monday-Friday");
+            alert.showAndWait();
+            return false;
+        }
         if(startDatePicker.getValue().isBefore(endDatePicker.getValue()) || startDatePicker.getValue().isAfter(endDatePicker.getValue())){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -201,7 +228,6 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-
         if(startTime.isAfter(endTime)){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -210,7 +236,6 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-
         if(startTime == endTime){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -219,7 +244,6 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-
         if (estStartTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -228,7 +252,6 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-
         if (estStartTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -237,7 +260,6 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-
         if (estEndTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -246,7 +268,6 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-
         if (estEndTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -258,5 +279,113 @@ public class CreateAppointment implements Initializable {
         return true;
     }
 
+    private boolean checkValidEntries(){
+        if(customerIdText.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO CUSTOMER SELECTED");
+            alert.setContentText("Please select a customer from the table to schedule an appointment for.");
+            alert.showAndWait();
+            return false;
+        }
+        if(descriptionText.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO DESCRIPTION");
+            alert.setContentText("Description field cannot be blank.");
+            alert.showAndWait();
+            return false;
+        }
+        if(userIdText.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO USER ID");
+            alert.setContentText("User ID field cannot be blank.");
+            alert.showAndWait();
+            return false;
+        }
+        if(contactNameComboBox.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO CONTACT SELECTED");
+            alert.setContentText("Please select a contact name.");
+            alert.showAndWait();
+            return false;
+        }
+        if(locationText.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO LOCATION");
+            alert.setContentText("Location field cannot be blank.");
+            alert.showAndWait();
+            return false;
+        }
+        if(titleText.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO TITLE");
+            alert.setContentText("Title field cannot be blank.");
+            alert.showAndWait();
+            return false;
+        }
+        if(typeText.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO TYPE");
+            alert.setContentText("Type field cannot be blank.");
+            alert.showAndWait();
+            return false;
+        }
+        if(startDatePicker.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO START DATE");
+            alert.setContentText("Please select a start date.");
+            alert.showAndWait();
+            return false;
+        }
+        if(endDatePicker.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO END DATE");
+            alert.setContentText("Please select an end date.");
+            alert.showAndWait();
+            return false;
+        }
+        if(startTimeComboBox.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO START TIME");
+            alert.setContentText("Please select a start time.");
+            alert.showAndWait();
+            return false;
+        }
+        if( endTimeComboBox.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("NO END TIME");
+            alert.setContentText("Please select an end time.");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+
+    boolean checkSchedulingConflicts() throws SQLException {
+        int customerId = Integer.parseInt(customerIdText.getText());
+        ObservableList customerAppointments = AppointmentQueries.associatedApointments(customerId);
+        System.out.println(customerAppointments);
+        if(!customerAppointments.isEmpty()) {
+            System.out.println("CustomerHasAppointments");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("CUSTOMER HAS APPOINTMENTS SCHEDULED");
+            alert.setContentText("");
+            alert.showAndWait();
+            return false;
+        }
+
+        return true;
+    }
 
 }
