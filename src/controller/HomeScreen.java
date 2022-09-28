@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -48,6 +50,7 @@ public class HomeScreen implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
+            checkUpcomingAppointments();
             viewAllRadio.setSelected(true);
             appointmentTableView.setItems(AppointmentQueries.appointments());
             startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
@@ -217,6 +220,53 @@ public class HomeScreen implements Initializable {
             alert.setHeaderText("Select appointment");
             alert.setContentText("Please select an appointment to delete");
             alert.showAndWait();
+        }
+    }
+
+private static boolean firstTime = true;
+
+    private void checkUpcomingAppointments(){
+        if(!firstTime){
+            return;
+        }
+        firstTime = false;
+
+        LocalDateTime loginTime = LocalDateTime.now();
+        LocalDateTime loginTimePlus15 = LocalDateTime.now().plusMinutes(15);
+       try {
+           ObservableList<Appointment> appointmentsIn15 = FXCollections.observableArrayList();
+           ObservableList<Appointment> appointmentList = AppointmentQueries.appointments();
+           if (appointmentList != null) {
+               for (Appointment upcomingAppointment : appointmentList) {
+                   if (upcomingAppointment.getStartDateTime().isAfter(loginTime) && upcomingAppointment.getStartDateTime().isBefore(loginTimePlus15)) {
+                       appointmentsIn15.add(upcomingAppointment);
+                       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                       alert.setTitle("CONFIRMATION");
+                       alert.setHeaderText("Upcoming Appointments");
+                       alert.setContentText("Appointment coming up: " + "Appointment ID " +upcomingAppointment.getAppointmentId() + " on " + upcomingAppointment.getStartDateTime().toLocalDate() +" at " + upcomingAppointment.getStartDateTime().toLocalTime() + " - " + upcomingAppointment.getEndDateTime().toLocalTime());
+                       alert.showAndWait();
+                   }
+                   if(upcomingAppointment.getStartDateTime().isBefore(loginTime) && upcomingAppointment.getEndDateTime().isAfter(loginTime)){
+                       appointmentsIn15.add(upcomingAppointment);
+                       Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                       alert.setTitle("CONFIRMATION");
+                       alert.setHeaderText("Appointments in progress");
+                       alert.setContentText("Appointment currently in progress: " + upcomingAppointment.getStartDateTime().toLocalTime() + " - " + upcomingAppointment.getEndDateTime().toLocalTime());
+                       alert.showAndWait();
+                   }
+
+               }
+           }
+           if(appointmentsIn15.isEmpty()){
+               Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+               alert.setTitle("CONFIRMATION");
+               alert.setHeaderText("No Upcoming Appointments");
+               alert.setContentText("No appointments in the next 15 minutes");
+               alert.showAndWait();
+           }
+       }
+        catch(Exception e){
+           e.printStackTrace();
         }
     }
 }

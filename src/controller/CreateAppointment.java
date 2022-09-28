@@ -3,6 +3,7 @@ package controller;
 import database.AppointmentQueries;
 import database.ContactQueries;
 import database.CustomerQueries;
+import helper.TimeUtility;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,10 +24,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
+
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -50,8 +49,8 @@ public class CreateAppointment implements Initializable {
     public TextField typeText;
     public DatePicker startDatePicker;
     public DatePicker endDatePicker;
-    public ComboBox startTimeComboBox;
-    public ComboBox endTimeComboBox;
+    public ComboBox<LocalTime> startTimeComboBox;
+    public ComboBox<LocalTime> endTimeComboBox;
 
 
     @Override
@@ -77,34 +76,10 @@ public class CreateAppointment implements Initializable {
 
 
     private void startEndTimeCombos(){
-        ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
-        LocalTime start = LocalTime.of(4, 0) ;
-        LocalTime end = LocalTime.of(22, 0);
-        schedulingTimes.add(start.toString());
-        while(start.isBefore(end)){
-            start = start.plusMinutes(30);
-            schedulingTimes.add(start.toString());
-        }
-        startTimeComboBox.setItems(schedulingTimes);
-        endTimeComboBox.setItems(schedulingTimes);
 
-        /*ObservableList<String> schedulingTimes = FXCollections.observableArrayList();
 
-        ZoneOffset zone = ZoneOffset.of("America/New_York").getRules().getOffset(8, );
-        OffsetTime start = LocalTime.now().atOffset(zone);
-        //ZoneOffset zoneOffset = zone.getRules().getOffset(Instant.from(start));
-        //OffsetTime end = LocalTime.of(22,0).atOffset(zone);
-        LocalTime start = LocalTime.of(8, 0);
-        //ZoneId zone = ZoneId.of("America/New_York");
-        //start.atOffset(zone.getRules().getOffset(LocalDateTime.now(ZoneId.of("America/New_York"))));
-        //ZoneId zone = ZoneId.of(String.valueOf(ZoneId.systemDefault()));
-        //start.atOffset(zone.getRules().getOffset(LocalDateTime.now()));
-        //System.out.println(start.atOffset(zone.getRules().getOffset(LocalDateTime.now())));
-        OffsetTime end = LocalTime.of(22, 0).atOffset(ZoneOffset.of("America/New_York"));
-        //LocalTime st = ZoneOffset.of("America/New_York").
-        System.out.println(end);
-
-*/
+        startTimeComboBox.setItems(TimeUtility.getStartEndTime());
+        endTimeComboBox.setItems(TimeUtility.getStartEndTime());
     }
 
 
@@ -177,33 +152,10 @@ public class CreateAppointment implements Initializable {
 
 
     private boolean checkWithinBusinessHours() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        ZoneId systemZoneId = ZoneId.systemDefault();
-        System.out.println(systemZoneId + " DefaultZone");
-
-        LocalDate startDate = startDatePicker.getValue();
-        System.out.println(startDate + " StartDatePicker");
-        LocalDate endDate = endDatePicker.getValue();
-        System.out.println(endDate + " EndDatePicker");
-
-        LocalTime startTime = LocalTime.parse((CharSequence) startTimeComboBox.getSelectionModel().getSelectedItem());
-        System.out.println(startTime + " startTime");
-        LocalTime endTime = LocalTime.parse((CharSequence) endTimeComboBox.getSelectionModel().getSelectedItem(), formatter);
-        System.out.println(endTime + " endTime");
-
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-        System.out.println(startDateTime + " StartDateTime");
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
-        System.out.println(endDateTime + " EndDateTime");
-
-        ZonedDateTime estStartTime = startDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
-        System.out.println(estStartTime + " EstStartTime");
-        ZonedDateTime estEndTime = endDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
-        System.out.println(estEndTime + " EstEndTime");
+        LocalTime startTime = startTimeComboBox.getValue();
+        LocalTime endTime = endTimeComboBox.getValue();
 
         DayOfWeek dWeek = startDatePicker.getValue().getDayOfWeek();
-        System.out.println(dWeek + " DayOfWeek");
 
         if(dWeek == DayOfWeek.SATURDAY || dWeek == DayOfWeek.SUNDAY){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -242,38 +194,6 @@ public class CreateAppointment implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("INVALID TIMES");
             alert.setContentText("Start time cannot be the same as end time");
-            alert.showAndWait();
-            return false;
-        }
-        if (estStartTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID START TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
-        if (estStartTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID START TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
-        if (estEndTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID END TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
-        if (estEndTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID END TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
             alert.showAndWait();
             return false;
         }
@@ -373,49 +293,42 @@ public class CreateAppointment implements Initializable {
     }
 
     boolean checkSchedulingConflicts() throws SQLException {
-        LocalTime newStartTime = LocalTime.parse((CharSequence) startTimeComboBox.getValue());
-        LocalTime newEndTime = LocalTime.parse((CharSequence) endTimeComboBox.getValue());
+        LocalTime newStartTime = startTimeComboBox.getValue();
+        LocalTime newEndTime = endTimeComboBox.getValue();
 
         LocalDate newStartDate = startDatePicker.getValue();
         LocalDate newEndDate = endDatePicker.getValue();
 
         LocalDateTime newStartDT = LocalDateTime.of(newStartDate, newStartTime);
         LocalDateTime newEndDT = LocalDateTime.of(newEndDate, newEndTime);
-        System.out.println(newStartDT +" - " + newEndDT + "  newStart/End DT");
 
-        int customerId = Integer.parseInt(customerIdText.getText());
-        ObservableList<Appointment> customerAppointments = AppointmentQueries.associatedApointments(customerId);
-        System.out.println(customerAppointments);
+        ObservableList<Appointment> customerAppointments = AppointmentQueries.associatedApointments(Integer.parseInt(customerIdText.getText()));
+
         LocalDateTime existingAppointmentStart;
         LocalDateTime existingAppointmentEnd;
+
         for(Appointment appointment: customerAppointments){
-            System.out.println(appointment + "appointment/customerAppointments");
+
             existingAppointmentStart = appointment.getStartDateTime();
-            System.out.println(" - " + existingAppointmentStart + " ExistingStartDT" );
             existingAppointmentEnd = appointment.getEndDateTime();
-            System.out.println(" - " + existingAppointmentEnd + " ExistingEndDT");
+
             if(newStartDT.isAfter(existingAppointmentStart) && newStartDT.isBefore(existingAppointmentEnd)){
-                /*Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("1: SCHEDULING CONFLICT");
                 alert.setContentText("Customer already has an appointment during that time.");
                 alert.showAndWait();
-
-                 */
                 return false;
             }
             else if(newEndDT.isAfter(existingAppointmentStart) && newEndDT.isBefore(existingAppointmentEnd)){
-                /*Alert alert = new Alert(Alert.AlertType.ERROR);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("2: SCHEDULING CONFLICT");
                 alert.setContentText("Customer already has an appointment during that time.");
                 alert.showAndWait();
-
-                 */
                 return false;
             }
         }
-
         return true;
     }
 
