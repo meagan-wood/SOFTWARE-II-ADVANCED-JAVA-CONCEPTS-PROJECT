@@ -2,6 +2,7 @@ package controller;
 
 import database.AppointmentQueries;
 import database.ContactQueries;
+import database.UserQueries;
 import helper.TimeUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Contact;
+import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,8 +34,8 @@ import java.util.ResourceBundle;
 public class ModifyAppointmentController implements Initializable {
     public TextField customerIdText;
     public TextField descriptionText;
-    public TextField userIdText;
-    public ComboBox contactNameComboBox;
+
+    public ComboBox<Contact> contactNameComboBox;
     public TextField appointmentIdText;
     public TextField locationText;
     public TextField titleText;
@@ -43,6 +46,7 @@ public class ModifyAppointmentController implements Initializable {
     public ComboBox<LocalTime> endTimeComboBox;
 
     public Appointment appointmentToModify = null;
+    public ComboBox<Users> userIdComboBox;
 
 
     @Override
@@ -50,6 +54,7 @@ public class ModifyAppointmentController implements Initializable {
         try {
             contactNameComboBox.setItems(ContactQueries.contacts());
             startEndTimeCombos();
+            userIdComboBox.setItems(UserQueries.users());
 
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -73,7 +78,7 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void onSaveAppointment(ActionEvent actionEvent) throws SQLException, ParseException {
-       boolean conflicts = checkSchedulingConflicts();
+       /*boolean conflicts = checkSchedulingConflicts();
        if(conflicts){
            Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("Error");
@@ -89,7 +94,50 @@ public class ModifyAppointmentController implements Initializable {
            alert.showAndWait();
        }
 
+        */
+        boolean noBlankFields = checkValidEntries();
+        if(noBlankFields){
+            boolean timesValid = checkWithinBusinessHours();
+            if(timesValid){
+                boolean noOverlapCustomer = checkSchedulingConflicts();
+
+                if (noOverlapCustomer){
+                    try{
+                        int rowsAffected = AppointmentQueries.updateAppointment(titleText.getText(),descriptionText.getText(), locationText.getText(), typeText.getText(),
+                                LocalDateTime.of(startDatePicker.getValue(), startTimeComboBox.getValue()), LocalDateTime.of(endDatePicker.getValue(), endTimeComboBox.getValue()),
+                                Integer.parseInt(customerIdText.getText()), userIdComboBox.getValue().getUserId(), contactNameComboBox.getValue().getContactId(), Integer.parseInt(appointmentIdText.getText()));
+                        if(rowsAffected >0){
+
+                            Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
+                            alert3.setTitle("Confirmation");
+                            alert3.setHeaderText((null));
+                            alert3.setContentText("Appointment has been updated");
+                            Optional<ButtonType> result = alert3.showAndWait();
+                            if (alert3.getResult() == ButtonType.OK) {
+                                Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));
+                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            }
+                        }
+                        else{
+                            Alert alert2 = new Alert (Alert.AlertType.ERROR);
+                            alert2.setTitle("ERROR");
+                            alert2.setHeaderText("CANNOT UPDATE APPOINTMENT");
+                            alert2.setContentText("Sorry: Unable to update appointment at this time. Please try again.");
+                            alert2.showAndWait();
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
+
+
+
 
 
     public void sendAppointment(Appointment appointment) throws SQLException {
@@ -97,7 +145,7 @@ public class ModifyAppointmentController implements Initializable {
         appointmentToModify = appointment;
         customerIdText.setText(String.valueOf(appointment.getCustomerId()));
         descriptionText.setText(appointment.getDescription());
-        userIdText.setText(String.valueOf(appointment.getUserId()));
+        userIdComboBox.setValue(appointment.getUserId());
         contactNameComboBox.setValue(appointment.getContactId());
         appointmentIdText.setText(String.valueOf(appointment.getAppointmentId()));
         locationText.setText(appointment.getLocation());
@@ -116,32 +164,11 @@ public class ModifyAppointmentController implements Initializable {
 
     }
 
-    private boolean checkWithinBusinessHours(){
-        ZoneId systemZoneId = ZoneId.systemDefault();
-        System.out.println(systemZoneId + " DefaultZone");
-
-        LocalDate startDate = startDatePicker.getValue();
-        System.out.println(startDate + " StartDatePicker");
-        LocalDate endDate = endDatePicker.getValue();
-        System.out.println(endDate + " EndDatePicker");
-
+    private boolean checkWithinBusinessHours() {
         LocalTime startTime = startTimeComboBox.getValue();
-        System.out.println(startTime + " startTime");
         LocalTime endTime = endTimeComboBox.getValue();
-        System.out.println(endTime + " endTime");
-
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-        System.out.println(startDateTime + " StartDateTime");
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
-        System.out.println(endDateTime + " EndDateTime");
-
-        ZonedDateTime estStartTime = startDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
-        System.out.println(estStartTime + " EstStartTime");
-        ZonedDateTime estEndTime = endDateTime.atZone(systemZoneId).withZoneSameInstant(ZoneId.of("America/New_York"));
-        System.out.println(estEndTime + " EstEndTime");
 
         DayOfWeek dWeek = startDatePicker.getValue().getDayOfWeek();
-        System.out.println(dWeek + " DayOfWeek");
 
         if(dWeek == DayOfWeek.SATURDAY || dWeek == DayOfWeek.SUNDAY){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -183,64 +210,23 @@ public class ModifyAppointmentController implements Initializable {
             alert.showAndWait();
             return false;
         }
-        if (estStartTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID START TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
-        if (estStartTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID START TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
-        if (estEndTime.toLocalTime().isBefore(LocalTime.of(8, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID END TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
-        if (estEndTime.toLocalTime().isAfter(LocalTime.of(22, 0))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("INVALID END TIME");
-            alert.setContentText("Business hours are Monday-Friday 8:00AM-10:00PM EST.");
-            alert.showAndWait();
-            return false;
-        }
         return true;
     }
 
 
     boolean checkSchedulingConflicts() throws SQLException, ParseException {
-        System.out.println("Start checkSchedulingConflicts");
 
         LocalTime newStartTime = startTimeComboBox.getValue();
-        System.out.println(newStartTime + "  newStartTime");
         LocalTime newEndTime = endTimeComboBox.getValue();
-        System.out.println(newEndTime + "  newEndTime");
 
         LocalDate newStartDate = startDatePicker.getValue();
         LocalDate newEndDate = endDatePicker.getValue();
 
         LocalDateTime newStartDT = LocalDateTime.of(newStartDate, newStartTime);
         LocalDateTime newEndDT = LocalDateTime.of(newEndDate, newEndTime);
-        System.out.println(newStartDT +" - " + newEndDT + "  newStart/End DT");
 
         int newAppointmentId = Integer.parseInt(appointmentIdText.getText());
-        System.out.println(newAppointmentId + " newAppointmentId");
-
-        int customerId = Integer.parseInt(customerIdText.getText());
-        System.out.println(customerId + "  customerId");
-        ObservableList<Appointment> customerAppointments = AppointmentQueries.associatedApointments(customerId);
-        System.out.println(customerAppointments + "  scheduledCustomerAppointments");
+        ObservableList<Appointment> customerAppointments = AppointmentQueries.associatedApointments(Integer.parseInt(customerIdText.getText()));
 
         LocalDateTime existingAppointmentStart;
         LocalDateTime existingAppointmentEnd;
@@ -294,7 +280,7 @@ public class ModifyAppointmentController implements Initializable {
             alert.showAndWait();
             return false;
         }
-        if(userIdText.getText().isEmpty()){
+        if(userIdComboBox.getValue() == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("NO USER ID");
@@ -358,7 +344,7 @@ public class ModifyAppointmentController implements Initializable {
             alert.showAndWait();
             return false;
         }
-        if( endTimeComboBox.getValue() == null){
+        if(endTimeComboBox.getValue() == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("NO END TIME");
@@ -368,4 +354,5 @@ public class ModifyAppointmentController implements Initializable {
         }
         return true;
     }
+
 }

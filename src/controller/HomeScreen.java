@@ -1,7 +1,6 @@
 package controller;
 
 import database.AppointmentQueries;
-import database.CustomerQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,10 +20,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+
 
 public class HomeScreen implements Initializable {
 
@@ -63,9 +62,11 @@ public class HomeScreen implements Initializable {
             typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
             userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
+
     }
 
 

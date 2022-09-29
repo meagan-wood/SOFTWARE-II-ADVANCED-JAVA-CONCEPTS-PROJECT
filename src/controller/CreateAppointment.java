@@ -3,6 +3,7 @@ package controller;
 import database.AppointmentQueries;
 import database.ContactQueries;
 import database.CustomerQueries;
+import database.UserQueries;
 import helper.TimeUtility;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -41,7 +42,6 @@ public class CreateAppointment implements Initializable {
     public TableColumn customerIdColumn;
     public TextField customerIdText;
     public TextField descriptionText;
-    public TextField userIdText;
     public ComboBox<Contact> contactNameComboBox;
     public TextField appointmentIdText;
     public TextField locationText;
@@ -51,6 +51,7 @@ public class CreateAppointment implements Initializable {
     public DatePicker endDatePicker;
     public ComboBox<LocalTime> startTimeComboBox;
     public ComboBox<LocalTime> endTimeComboBox;
+    public ComboBox<Users> userIdComboBox;
 
 
     @Override
@@ -67,6 +68,7 @@ public class CreateAppointment implements Initializable {
             customerIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerId"));
             //divisionIdColumn.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("divisionId"));
             contactNameComboBox.setItems(ContactQueries.contacts());
+            userIdComboBox.setItems(UserQueries.users());
             startEndTimeCombos();
         }
         catch (SQLException throwable) {
@@ -124,8 +126,8 @@ public class CreateAppointment implements Initializable {
                 if (noOverlapCustomer){
                     try{
                         int rowsAffected = AppointmentQueries.insertAppointment(titleText.getText(), descriptionText.getText(), locationText.getText(), typeText.getText(),
-                                LocalDateTime.of(startDatePicker.getValue(), startTimeComboBox.getValue()), LocalDateTime.of(endDatePicker.getValue(), endTimeComboBox.getValue()), Integer.parseInt(customerIdText.getText()),
-                                Integer.parseInt(userIdText.getText()), contactNameComboBox.getValue().getContactId());
+                                LocalDateTime.of(startDatePicker.getValue(), startTimeComboBox.getValue()), LocalDateTime.of(endDatePicker.getValue(), endTimeComboBox.getValue()),
+                                Integer.parseInt(customerIdText.getText()), userIdComboBox.getValue().getUserId(), contactNameComboBox.getValue().getContactId());
 
                         if(rowsAffected >0){
 
@@ -145,7 +147,7 @@ public class CreateAppointment implements Initializable {
                             Alert alert2 = new Alert (Alert.AlertType.ERROR);
                             alert2.setTitle("ERROR");
                             alert2.setHeaderText("CANNOT SAVE APPOINTMENT");
-                            alert2.setContentText("Make sure all boxes are filled, and have correct input type (Ex: UserId must be an integer");
+                            alert2.setContentText("Sorry: Unable to add this appointment at this time. Please try again.");
                             alert2.showAndWait();
                         }
                     }
@@ -234,7 +236,7 @@ public class CreateAppointment implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("NO CUSTOMER SELECTED");
-            alert.setContentText("Please select the customer from the table to schedule an appointment for.");
+            alert.setContentText("To schedule an appointment, please select a customer from the table. For a new customer, please add the customer before scheduling an appointment");
             alert.showAndWait();
             return false;
         }
@@ -246,11 +248,11 @@ public class CreateAppointment implements Initializable {
             alert.showAndWait();
             return false;
         }
-        if(userIdText.getText().isEmpty()){
+        if(userIdComboBox.getValue() == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("NO USER ID");
-            alert.setContentText("User ID field cannot be blank.");
+            alert.setContentText("Please select a User.");
             alert.showAndWait();
             return false;
         }

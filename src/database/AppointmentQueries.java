@@ -3,6 +3,7 @@ package database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Division;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -184,7 +185,7 @@ public class AppointmentQueries {
     }
 
     public static int insertAppointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId) throws SQLException{
-        String sql = "INSERT INTO APPOINTMENTS(Title, Description, Location, Type, Start, End, Customer_ID, Uer_ID, Contact_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO APPOINTMENTS(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
         ps.setString(1, title);
         ps.setString(2, description);
@@ -195,6 +196,25 @@ public class AppointmentQueries {
         ps.setInt(7, customerId);
         ps.setInt(8, userId);
         ps.setInt(9, contactId);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected;
+    }
+
+    public static int updateAppointment(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, int customerId, int userId, int contactId, int appointmentId) throws SQLException {
+
+        String sql = "UPDATE Appointments SET Title=?, Description=?, Location=?, Type=?, Start=?, End=?, Customer_ID=?, User_ID=?, Contact_ID=? WHERE Appointment_ID=?";
+
+        PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+        ps.setString(1, title);
+        ps.setString(2, description);
+        ps.setString(3, location);
+        ps.setString(4, type);
+        ps.setTimestamp(5, Timestamp.valueOf(start));
+        ps.setTimestamp(6, Timestamp.valueOf(end));
+        ps.setInt(7, customerId);
+        ps.setInt(8, userId);
+        ps.setInt(9, contactId);
+        ps.setInt(10, appointmentId);
         int rowsAffected = ps.executeUpdate();
         return rowsAffected;
     }

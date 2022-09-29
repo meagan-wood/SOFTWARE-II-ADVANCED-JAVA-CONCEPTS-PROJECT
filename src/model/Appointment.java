@@ -1,6 +1,7 @@
 package model;
 
 import database.ContactQueries;
+import database.UserQueries;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -95,8 +96,9 @@ public class Appointment {
         this.customerId = customerId;
     }
 
-    public int getUserId() {
-        return userId;
+    public Users getUserId() throws SQLException {
+        return UserQueries.usersById(userId);
+        //return userId;
     }
 
     public void setUserId(int userId) {

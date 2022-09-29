@@ -12,7 +12,6 @@
          </font></Label>
       <TextField fx:id="customerIdText" editable="false" layoutX="367.0" layoutY="106.0" prefHeight="25.0" prefWidth="150.0" />
       <TextField fx:id="descriptionText" layoutX="367.0" layoutY="164.0" prefHeight="25.0" prefWidth="150.0" />
-      <TextField fx:id="userIdText" layoutX="367.0" layoutY="289.0" prefHeight="25.0" prefWidth="150.0" />
       <Label layoutX="367.0" layoutY="87.0" text="Customer ID" />
       <Label layoutX="367.0" layoutY="147.0" text="Description" />
       <Label layoutX="367.0" layoutY="272.0" text="UserID" />
@@ -36,5 +35,6 @@
       <ComboBox fx:id="endTimeComboBox" layoutX="367.0" layoutY="415.0" prefWidth="150.0" />
       <Label layoutX="367.0" layoutY="337.0" text="Start Time" />
       <Label layoutX="367.0" layoutY="398.0" text="End Time" />
+      <ComboBox fx:id="userIdComboBox" layoutX="367.0" layoutY="289.0" prefWidth="150.0" />
    </children>
 </AnchorPane>
