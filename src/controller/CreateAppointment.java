@@ -42,7 +42,7 @@ public class CreateAppointment implements Initializable {
     public TextField customerIdText;
     public TextField descriptionText;
     public TextField userIdText;
-    public ComboBox contactNameComboBox;
+    public ComboBox<Contact> contactNameComboBox;
     public TextField appointmentIdText;
     public TextField locationText;
     public TextField titleText;
@@ -122,7 +122,36 @@ public class CreateAppointment implements Initializable {
                 boolean noOverlapCustomer = checkSchedulingConflicts();
 
                 if (noOverlapCustomer){
+                    try{
+                        int rowsAffected = AppointmentQueries.insertAppointment(titleText.getText(), descriptionText.getText(), locationText.getText(), typeText.getText(),
+                                LocalDateTime.of(startDatePicker.getValue(), startTimeComboBox.getValue()), LocalDateTime.of(endDatePicker.getValue(), endTimeComboBox.getValue()), Integer.parseInt(customerIdText.getText()),
+                                Integer.parseInt(userIdText.getText()), contactNameComboBox.getValue().getContactId());
 
+                        if(rowsAffected >0){
+
+                            Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
+                            alert3.setTitle("Confirmation");
+                            alert3.setHeaderText((null));
+                            alert3.setContentText("Appointment has been saved.");
+                            Optional<ButtonType> result = alert3.showAndWait();
+                            if (alert3.getResult() == ButtonType.OK) {
+                                Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));
+                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            }
+                        }
+                        else{
+                            Alert alert2 = new Alert (Alert.AlertType.ERROR);
+                            alert2.setTitle("ERROR");
+                            alert2.setHeaderText("CANNOT SAVE APPOINTMENT");
+                            alert2.setContentText("Make sure all boxes are filled, and have correct input type (Ex: UserId must be an integer");
+                            alert2.showAndWait();
+                        }
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
 
 
                 } else {
