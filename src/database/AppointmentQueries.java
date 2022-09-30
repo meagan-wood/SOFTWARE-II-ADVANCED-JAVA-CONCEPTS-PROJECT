@@ -217,12 +217,17 @@ public class AppointmentQueries {
         return rowsAffected;
     }
 
-    public static ObservableList<Appointment> appointmentsByMonth(int monthId) throws SQLException {
+    public static ObservableList<Appointment> appointmentsByMonthName(int monthId) {
         ObservableList<Appointment> monthlyAppointments = FXCollections.observableArrayList();
 
         try{
-            String sql = "SELECT * FROM APPOINTMENTS WHERE month(start) = ?";
+            System.out.println(monthId + "  Queries monthId");
+            System.out.println("Start SQL Statement");
+            String sql = "SELECT * FROM APPOINTMENTS WHERE month(start) = ? "; //AND
+            System.out.println(sql);
             PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+            System.out.println(ps);
+            ps.setInt(1,monthId);
             ResultSet resultSet = ps.executeQuery();
 
             while(resultSet.next()){
