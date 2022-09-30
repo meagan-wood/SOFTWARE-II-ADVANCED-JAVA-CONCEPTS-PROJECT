@@ -1,7 +1,6 @@
 package controller;
 
 import database.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +18,6 @@ import model.Division;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -44,7 +41,6 @@ public class ExistingCustomer implements Initializable {
     public ComboBox<Country> countryComboBox;
     public ComboBox stateComboBox;
     public TableView existingAppointmentsTable;
-    static ObservableList<Customer> allCustomers;
     public TableColumn startColumn;
     public TableColumn endColumn;
     public TableColumn locationColumn;

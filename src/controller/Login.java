@@ -41,9 +41,7 @@ public class Login implements Initializable {
             cancelButton.setText(rb.getString("cancel"));
             enterButton.setText(rb.getString("enter"));
         }
-
         timeZoneDisplay();
-
     }
 
 

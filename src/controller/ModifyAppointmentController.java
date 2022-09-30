@@ -4,7 +4,6 @@ import database.AppointmentQueries;
 import database.ContactQueries;
 import database.UserQueries;
 import helper.TimeUtility;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -20,21 +19,17 @@ import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
 public class ModifyAppointmentController implements Initializable {
+
     public TextField customerIdText;
     public TextField descriptionText;
-
     public ComboBox<Contact> contactNameComboBox;
     public TextField appointmentIdText;
     public TextField locationText;
@@ -78,23 +73,6 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void onSaveAppointment(ActionEvent actionEvent) throws SQLException, ParseException {
-       /*boolean conflicts = checkSchedulingConflicts();
-       if(conflicts){
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setTitle("Error");
-           alert.setHeaderText("3: NO CONFLICTS");
-           alert.setContentText("");
-           alert.showAndWait();
-       }
-       else{
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setTitle("Error");
-           alert.setHeaderText("2: INVALID TIMES");
-           alert.setContentText("Conflicts");
-           alert.showAndWait();
-       }
-
-        */
         boolean noBlankFields = checkValidEntries();
         if(noBlankFields){
             boolean timesValid = checkWithinBusinessHours();
@@ -157,12 +135,14 @@ public class ModifyAppointmentController implements Initializable {
         endTimeComboBox.setValue(appointment.getEndDateTime().toLocalTime());
     }
 
+
     private void startEndTimeCombos() {
 
         startTimeComboBox.setItems(TimeUtility.getStartEndTime());
         endTimeComboBox.setItems(TimeUtility.getStartEndTime());
 
     }
+
 
     private boolean checkWithinBusinessHours() {
         LocalTime startTime = startTimeComboBox.getValue();
@@ -214,7 +194,7 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
-    boolean checkSchedulingConflicts() throws SQLException, ParseException {
+    boolean checkSchedulingConflicts() throws SQLException {
 
         LocalTime newStartTime = startTimeComboBox.getValue();
         LocalTime newEndTime = endTimeComboBox.getValue();
@@ -231,32 +211,29 @@ public class ModifyAppointmentController implements Initializable {
         LocalDateTime existingAppointmentStart;
         LocalDateTime existingAppointmentEnd;
 
-        for(Appointment appointment: customerAppointments){
-            if(appointment.getAppointmentId() == newAppointmentId){
+        for(Appointment appointment: customerAppointments) {
+            if (appointment.getAppointmentId() == newAppointmentId) {
                 continue;
             }
-            System.out.println(appointment + "  appointment/customerAppointments");
 
             existingAppointmentStart = appointment.getStartDateTime();
-            System.out.println(" - " + existingAppointmentStart + " ExistingStartDT" );
-
             existingAppointmentEnd = appointment.getEndDateTime();
-            System.out.println(" - " + existingAppointmentEnd + " ExistingEndDT");
-                if (newStartDT.isAfter(existingAppointmentStart) && newStartDT.isBefore(existingAppointmentEnd)) {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                    alert2.setTitle("Error");
-                    alert2.setHeaderText("2: OVERLAP");
-                    alert2.setContentText("Customer already has appointment during this time");
-                    alert2.showAndWait();
-                    return false;
-                } else if (newEndDT.isAfter(existingAppointmentStart) && newEndDT.isBefore(existingAppointmentEnd)) {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                    alert2.setTitle("Error");
-                    alert2.setHeaderText("3: OVERLAP");
-                    alert2.setContentText("Customer already has appointment during this time");
-                    alert2.showAndWait();
-                    return false;
-                }
+
+            if (newStartDT.isAfter(existingAppointmentStart) && newStartDT.isBefore(existingAppointmentEnd)) {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("2: OVERLAP");
+                alert2.setContentText("Customer already has appointment during this time");
+                alert2.showAndWait();
+                return false;
+            } else if (newEndDT.isAfter(existingAppointmentStart) && newEndDT.isBefore(existingAppointmentEnd)) {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR);
+                alert2.setTitle("Error");
+                alert2.setHeaderText("3: OVERLAP");
+                alert2.setContentText("Customer already has appointment during this time");
+                alert2.showAndWait();
+                return false;
+            }
         }
         return true;
     }

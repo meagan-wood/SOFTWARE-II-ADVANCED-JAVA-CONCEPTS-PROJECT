@@ -213,7 +213,6 @@ public class HomeScreen implements Initializable {
                     e.printStackTrace();
                 }
             }
-
         }
         else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -223,6 +222,7 @@ public class HomeScreen implements Initializable {
             alert.showAndWait();
         }
     }
+
 
 private static boolean firstTime = true;
 
@@ -255,7 +255,6 @@ private static boolean firstTime = true;
                        alert.setContentText("Appointment currently in progress: " + upcomingAppointment.getStartDateTime().toLocalTime() + " - " + upcomingAppointment.getEndDateTime().toLocalTime());
                        alert.showAndWait();
                    }
-
                }
            }
            if(appointmentsIn15.isEmpty()){
@@ -269,5 +268,12 @@ private static boolean firstTime = true;
         catch(Exception e){
            e.printStackTrace();
         }
+    }
+
+    public void onReportsButton(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.FXML"));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

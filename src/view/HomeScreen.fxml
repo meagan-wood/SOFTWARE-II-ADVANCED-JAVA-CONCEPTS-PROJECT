@@ -13,7 +13,7 @@
                   <Button layoutX="71.0" layoutY="208.0" mnemonicParsing="false" onAction="#onAddNewCustomerButton" prefHeight="34.0" prefWidth="206.0" text="Add New Customer" />
                   <Button layoutX="71.0" layoutY="284.0" mnemonicParsing="false" onAction="#onCreateAppButton" prefHeight="34.0" prefWidth="206.0" text="Create Appointment" />
                   <Button layoutX="245.0" layoutY="653.0" mnemonicParsing="false" onAction="#onLogoutButton" prefHeight="34.0" prefWidth="100.0" text="Log Out" />
-                  <Button layoutX="71.0" layoutY="362.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="206.0" text="Reports" />
+                  <Button layoutX="71.0" layoutY="362.0" mnemonicParsing="false" onAction="#onReportsButton" prefHeight="34.0" prefWidth="206.0" text="Reports" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="659.0" prefWidth="894.0">

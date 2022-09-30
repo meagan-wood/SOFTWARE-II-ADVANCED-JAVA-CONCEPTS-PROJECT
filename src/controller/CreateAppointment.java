@@ -5,8 +5,6 @@ import database.ContactQueries;
 import database.CustomerQueries;
 import database.UserQueries;
 import helper.TimeUtility;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -18,17 +16,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.*;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
-
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 public class CreateAppointment implements Initializable {
 
@@ -79,7 +73,6 @@ public class CreateAppointment implements Initializable {
 
     private void startEndTimeCombos(){
 
-
         startTimeComboBox.setItems(TimeUtility.getStartEndTime());
         endTimeComboBox.setItems(TimeUtility.getStartEndTime());
     }
@@ -102,18 +95,18 @@ public class CreateAppointment implements Initializable {
 
 
     public void selectCustomerButton(ActionEvent actionEvent) {
-       Customer c = (Customer) custCreateAppTable.getSelectionModel().getSelectedItem();
-            if (c == null){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Nothing Selected");
-                alert.setContentText("Please select a customer");
-                alert.showAndWait();
-                return;
-            }
-            else{
-                customerIdText.setText(String.valueOf(c.getCustomerId()));
-            }
+        Customer c = (Customer) custCreateAppTable.getSelectionModel().getSelectedItem();
+        if (c == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Nothing Selected");
+            alert.setContentText("Please select a customer");
+            alert.showAndWait();
+            return;
+        } else {
+            customerIdText.setText(String.valueOf(c.getCustomerId()));
+        }
+
     }
 
     public void onScheduleAppointment(ActionEvent actionEvent) throws SQLException {
@@ -154,30 +147,8 @@ public class CreateAppointment implements Initializable {
                     catch(Exception e){
                         e.printStackTrace();
                     }
-
-
-                } else {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                    alert2.setTitle("Error");
-                    alert2.setHeaderText("OVERLAP");
-                    alert2.setContentText("Customer already has appointment during this time");
-                    alert2.showAndWait();
                 }
             }
-            else {
-                Alert alert2 = new Alert(Alert.AlertType.ERROR);
-                alert2.setTitle("Error");
-                alert2.setHeaderText("Invalid Appointment");
-                alert2.setContentText("Appointment must be scheduled Monday-Friday 8AM-10PM EST.");
-                alert2.showAndWait();
-            }
-        }
-        else{
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("BLANK FIELDS");
-            alert.setContentText("Please make sure all boxes have entries");
-            alert.showAndWait();
         }
     }
 

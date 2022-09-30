@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<SplitPane dividerPositions="0.34255129348795715, 0.6868867082961642, 0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="1123.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+   <items>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="370.0">
+         <children>
+            <Label alignment="CENTER" layoutY="42.0" prefHeight="43.0" prefWidth="370.0" text="Report 1: Appointments by type and month">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="128.0" layoutY="448.0" mnemonicParsing="false" onAction="#onReport1Button" text="Generate Report 1" />
+            <Label layoutX="66.0" layoutY="190.0" text="Please select the month you wish to view:">
+               <font>
+                  <Font size="13.0" />
+               </font></Label>
+            <ComboBox fx:id="monthComboBox" layoutX="99.0" layoutY="215.0" prefWidth="150.0" />
+         </children>
+      </Pane>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="370.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="42.0" prefHeight="43.0" prefWidth="370.0" text="Report 2: Schedule for contact">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="128.0" layoutY="448.0" mnemonicParsing="false" onAction="#onReport2Button" text="Generate Report 2" />
+            <Button layoutX="135.0" layoutY="575.0" mnemonicParsing="false" onAction="#onReturnHome" prefHeight="25.0" prefWidth="100.0" text="Return Home" />
+            <Label layoutX="66.0" layoutY="190.0" text="Please select the contact to retrieve schedule:">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="reportContactBox" layoutX="110.0" layoutY="215.0" prefWidth="150.0" />
+         </children>
+      </Pane>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="370.0">
+         <children>
+            <Label alignment="CENTER" layoutX="2.0" layoutY="43.0" prefHeight="43.0" prefWidth="370.0" text="Report 3:">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font></Label>
+            <Button layoutX="130.0" layoutY="448.0" mnemonicParsing="false" onAction="#onReport3Button" text="Generate Report 3" />
+         </children>
+      </Pane>
+      <Label text="Label" />
+   </items>
+</SplitPane>
