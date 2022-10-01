@@ -99,14 +99,22 @@ public class Reports implements Initializable{
                         if(appointmentType.equals("Open")){
                             openList.add(appointmentType);
                         }
-                        if(appointmentType.equals("New") || appointmentType.equals("New Client") || appointmentType.equals("New Customer")){
+                        if(appointmentType.equals("New") || appointmentType.equals("New Client") || appointmentType.equals("New Customer") || appointmentType.equals("new")){
                             newList.add(appointmentType);
                         }
                         if(appointmentType.equals("") || appointmentType.isEmpty()){
                             unspecifiedList.add(appointmentType);
                         }
-                        otherList.add(appointmentType);
+                        if(appointmentType.equals("Other")) {
+                            otherList.add(appointmentType);
+                        }
                     }
+                    Alert alert = new Alert (Alert.AlertType.INFORMATION);
+                    alert.setTitle("REPORT 1");
+                    alert.setHeaderText("Appointment count by types for month: " + monthOfValue);
+                    alert.setContentText("Planning: " + planningList.size() + "\nDe-Briefing: " + debriefingList.size() + "\nFollow-up: " + followupList.size() +
+                            "\nOpen " + openList.size() + "\nNew Clients: " + newList.size() + "\nUnspecified: " + unspecifiedList.size() + "\nOther: " + otherList.size());
+                    alert.showAndWait();
                 }
 
             } catch (Exception e) {
@@ -117,6 +125,35 @@ public class Reports implements Initializable{
 
 
     public void onReport2Button(ActionEvent actionEvent) {
+            try {
+                Contact contactSelected = reportContactBox.getValue();
+                int contactId = contactSelected.getContactId();
+                ObservableList<Appointment> appointmentsContacts = AppointmentQueries.appointmentsByContactId(contactId);
+                if (appointmentsContacts != null) {
+
+                    for(Appointment contactAppointments: appointmentsContacts){
+                        Alert alert = new Alert (Alert.AlertType.INFORMATION);
+                        alert.setTitle("REPORT 2");
+                        alert.setHeaderText("Appointments for contact: " + reportContactBox.getValue());
+                        alert.setContentText("Appointment ID: " + contactAppointments.getAppointmentId() + "\nTitle: " + contactAppointments.getType() + "\nType: " + contactAppointments.getType() +
+                                "\nDescription: " + contactAppointments.getDescription() + "\nStart Date and Time " + contactAppointments.getStartDateTime() +
+                                "\nEnd Date and Time: " + contactAppointments.getEndDateTime() + "\nCustomer ID: " + contactAppointments.getCustomerId() + "\nUser ID: " + contactAppointments.getUserId());
+                        alert.showAndWait();
+                    }
+                }
+                else {
+                    Alert alert3 = new Alert(Alert.AlertType.ERROR);
+                    alert3.setTitle("ERROR");
+                    alert3.setHeaderText("NO CONTACT SELECTED");
+                    alert3.setContentText("Please select the contact to generate report.");
+                    alert3.showAndWait();
+                }
+
+            }catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+
     }
 
     public void onReport3Button(ActionEvent actionEvent) {

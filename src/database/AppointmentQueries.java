@@ -50,7 +50,6 @@ public class AppointmentQueries {
 
         try{
             String sql = "SELECT * FROM APPOINTMENTS WHERE contact_ID = ?";
-            System.out.println(sql +"  SQL Query");
             PreparedStatement ps = JDBC.connection.prepareStatement(sql);
             ps.setInt(1, ContactId);
             ResultSet resultSet = ps.executeQuery();
