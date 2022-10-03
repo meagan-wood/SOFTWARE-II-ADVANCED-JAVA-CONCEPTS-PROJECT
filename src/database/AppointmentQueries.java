@@ -46,7 +46,7 @@ public class AppointmentQueries {
 
     public static ObservableList<Appointment> appointmentsByContactId(int ContactId) throws SQLException {
 
-        ObservableList contactAppointments = FXCollections.observableArrayList();
+        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
 
         try{
             String sql = "SELECT * FROM APPOINTMENTS WHERE contact_ID = ?";

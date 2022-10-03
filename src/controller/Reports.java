@@ -10,9 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
@@ -20,13 +19,21 @@ import model.Contact;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class Reports implements Initializable{
     public ComboBox monthComboBox;
     public ComboBox<Contact> reportContactBox;
+    public TableView contactScheduleTable;
+    public TableColumn appointmentIdColumn;
+    public TableColumn titleColumn;
+    public TableColumn typeColumn;
+    public TableColumn descriptionColumn;
+    public TableColumn startColumn;
+    public TableColumn endColumn;
+    public TableColumn customerIdColumn;
+    public TableColumn userIdColumn;
 
 
     @Override
@@ -39,21 +46,13 @@ public class Reports implements Initializable{
         }
     }
 
-    public static ObservableList listOfTypes(){
-        ObservableList typeList = FXCollections.observableArrayList("De-Briefing", "Planning", "Open", "Follow-up", " Open", "Other", "Unspecified");
-        return typeList;
-    }
+    public static  ObservableList<String> listOfMonths(){
 
-
-    public static  ObservableList listOfMonths(){
-
-        ObservableList months = FXCollections.observableArrayList("01 January", "02 February", "03 March", "04 April", "05 May", "06 June", "07 July", "08 August",
+        ObservableList<String> months = FXCollections.observableArrayList("01 January", "02 February", "03 March", "04 April", "05 May", "06 June", "07 July", "08 August",
                 "09 September", "10 October", "11 November", "12 December");
-        //
         return months;
-
     }
-//
+
 
     public void onReport1Button(ActionEvent actionEvent) {
         ObservableList<String> debriefingList = FXCollections.observableArrayList();
@@ -62,8 +61,6 @@ public class Reports implements Initializable{
         ObservableList<String> openList = FXCollections.observableArrayList();
         ObservableList<String> newList = FXCollections.observableArrayList();
         ObservableList<String> otherList = FXCollections.observableArrayList();
-        ObservableList<String> unspecifiedList = FXCollections.observableArrayList();
-
 
         if(monthComboBox.getValue() == null){
             Alert alert3 = new Alert (Alert.AlertType.ERROR);
@@ -73,49 +70,48 @@ public class Reports implements Initializable{
             alert3.showAndWait();
         }
         else{
-
             try{
                 String monthOfValue = monthComboBox.getValue().toString();
                 String monthValueNum = monthOfValue.substring(0,2);
                 Integer monthId = Integer.parseInt(monthValueNum);
-                //System.out.println(monthId + "  MonthId");
-
-                //String monthId = monthComboBox.getValue().toString();
-                //int monthId1 = 2;
-                ObservableList<Appointment> appointmentsByMonthList = AppointmentQueries.appointmentsByMonthName(monthId);//monthId
-                System.out.println(appointmentsByMonthList + "  AppointmentsByMonthList");
-                if(appointmentsByMonthList != null){
-                    for (Appointment appointmentList: appointmentsByMonthList){
-                        String appointmentType = appointmentList.getType();
-                        if(appointmentType.equals("Planning") || appointmentType.equals("Planning Session")){
-                            planningList.add(appointmentType);
-                        }
-                        if(appointmentType.equals("Debriefing") || appointmentType.equals("De-Briefing")){
-                            debriefingList.add(appointmentType);
-                        }
-                        if(appointmentType.equals("Followup") || appointmentType.equals("Follow-Up")){
-                            followupList.add(appointmentType);
-                        }
-                        if(appointmentType.equals("Open")){
-                            openList.add(appointmentType);
-                        }
-                        if(appointmentType.equals("New") || appointmentType.equals("New Client") || appointmentType.equals("New Customer") || appointmentType.equals("new")){
-                            newList.add(appointmentType);
-                        }
-                        if(appointmentType.equals("") || appointmentType.isEmpty()){
-                            unspecifiedList.add(appointmentType);
-                        }
-                        if(appointmentType.equals("Other")) {
-                            otherList.add(appointmentType);
-                        }
+                ObservableList<Appointment> appointmentsByMonthList = AppointmentQueries.appointmentsByMonthName(monthId);
+                for (Appointment appointmentList: appointmentsByMonthList){
+                    String appointmentType = appointmentList.getType();
+                    if(appointmentType.equals("Planning") || appointmentType.equals("Planning Session")){
+                        planningList.add(appointmentType);
                     }
-                    Alert alert = new Alert (Alert.AlertType.INFORMATION);
-                    alert.setTitle("REPORT 1");
-                    alert.setHeaderText("Appointment count by types for month: " + monthOfValue);
-                    alert.setContentText("Planning: " + planningList.size() + "\nDe-Briefing: " + debriefingList.size() + "\nFollow-up: " + followupList.size() +
-                            "\nOpen " + openList.size() + "\nNew Clients: " + newList.size() + "\nUnspecified: " + unspecifiedList.size() + "\nOther: " + otherList.size());
-                    alert.showAndWait();
+                    if(appointmentType.equals("Debriefing") || appointmentType.equals("De-Briefing")){
+                        debriefingList.add(appointmentType);
+                    }
+                    if(appointmentType.equals("Followup") || appointmentType.equals("Follow-Up")){
+                        followupList.add(appointmentType);
+                    }
+                    if(appointmentType.equals("Open")){
+                        openList.add(appointmentType);
+                    }
+                    if(appointmentType.equals("New") || appointmentType.equals("New Client") || appointmentType.equals("New Customer") || appointmentType.equals("new")){
+                        newList.add(appointmentType);
+                    }
+
+                    if (appointmentType.equals("Other")){
+                        otherList.add(appointmentType);
+                    }
+                    if (!appointmentType.equals("Planning") && !appointmentType.equals("Planning Session")  && !appointmentType.equals("Debriefing") &&
+                            !appointmentType.equals("De-Briefing") && !appointmentType.equals("Followup") && !appointmentType.equals("Follow-Up") && !appointmentType.equals("Open") &&
+                            !appointmentType.equals("New") && !appointmentType.equals("New Client") && !appointmentType.equals("New Customer") && !appointmentType.equals("new") &&
+                            !appointmentType.equals("Other")){
+                        otherList.add(appointmentType);
+                        System.out.println(otherList);
+                    }
+
+
                 }
+                Alert alert = new Alert (Alert.AlertType.INFORMATION);
+                alert.setTitle("REPORT 1");
+                alert.setHeaderText("Appointment count by types for month: " + monthOfValue);
+                alert.setContentText("There are " + appointmentsByMonthList.size() + " appointments for the month " + "\nPlanning: " + planningList.size() + "\nDe-Briefing: " + debriefingList.size() +
+                        "\nFollow-up: " + followupList.size() + "\nOpen " + openList.size() + "\nNew Clients: " + newList.size() + "\nOther: " + otherList.size());
+                alert.showAndWait();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -124,36 +120,30 @@ public class Reports implements Initializable{
     }
 
 
-    public void onReport2Button(ActionEvent actionEvent) {
-            try {
-                Contact contactSelected = reportContactBox.getValue();
-                int contactId = contactSelected.getContactId();
-                ObservableList<Appointment> appointmentsContacts = AppointmentQueries.appointmentsByContactId(contactId);
-                if (appointmentsContacts != null) {
 
-                    for(Appointment contactAppointments: appointmentsContacts){
-                        Alert alert = new Alert (Alert.AlertType.INFORMATION);
-                        alert.setTitle("REPORT 2");
-                        alert.setHeaderText("Appointments for contact: " + reportContactBox.getValue());
-                        alert.setContentText("Appointment ID: " + contactAppointments.getAppointmentId() + "\nTitle: " + contactAppointments.getType() + "\nType: " + contactAppointments.getType() +
-                                "\nDescription: " + contactAppointments.getDescription() + "\nStart Date and Time " + contactAppointments.getStartDateTime() +
-                                "\nEnd Date and Time: " + contactAppointments.getEndDateTime() + "\nCustomer ID: " + contactAppointments.getCustomerId() + "\nUser ID: " + contactAppointments.getUserId());
-                        alert.showAndWait();
-                    }
-                }
-                else {
-                    Alert alert3 = new Alert(Alert.AlertType.ERROR);
-                    alert3.setTitle("ERROR");
-                    alert3.setHeaderText("NO CONTACT SELECTED");
-                    alert3.setContentText("Please select the contact to generate report.");
-                    alert3.showAndWait();
-                }
+    public void onReport2Button(ActionEvent actionEvent) throws SQLException {
 
-            }catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-
-
+        if(reportContactBox.getValue() == null){
+            Alert alert3 = new Alert(Alert.AlertType.ERROR);
+            alert3.setTitle("ERROR");
+            alert3.setHeaderText("NO CONTACT SELECTED");
+            alert3.setContentText("Please select the contact to generate report.");
+            alert3.showAndWait();
+        }
+        else{
+            Contact contactSelected = reportContactBox.getValue();
+            int contactId = contactSelected.getContactId();
+            ObservableList<Appointment> appointmentsContacts = AppointmentQueries.appointmentsByContactId(contactId);
+            contactScheduleTable.setItems(appointmentsContacts);
+            startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+            endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+            appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
+            titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+            descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+            typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+            customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
+            userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+        }
     }
 
     public void onReport3Button(ActionEvent actionEvent) {
