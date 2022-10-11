@@ -170,21 +170,22 @@ public class Reports implements Initializable{
                 String monthOfValue = comboBox3.getValue().toString();
                 String monthValueNum = monthOfValue.substring(0,2);
                 Integer monthId = Integer.parseInt(monthValueNum);
-                ObservableList<Users> loginsByMonth = UserQueries.userLoginsByMonth(monthId);
-                for (Users loginsList: loginsByMonth){
-                    String userName = loginsList.getUserName();
-                    if(userName.equals("test")) {
-                        userTest.add(loginsList);
+                ObservableList<Appointment> monthlyAppointments = AppointmentQueries.appointmentsByMonthName(monthId);;
+                for (Appointment appointmentList: monthlyAppointments){
+                    Users userId = appointmentList.getUserId();
+                    if(userId.getUserId() == 1) {
+                        userTest.add(appointmentList);
                     }
-                    if(userName.equals("admin")) {
-                        userAdmin.add(loginsList);
+                    if(userId.getUserId() == 2) {
+                        userAdmin.add(appointmentList);
                     }
 
                 }
                 Alert alert = new Alert (Alert.AlertType.INFORMATION);
-                alert.setTitle("REPORT 1");
-                alert.setHeaderText("User logins for: " + monthOfValue);
-                alert.setContentText("There were " + loginsByMonth.size() + " logins for the month " + "\nUser test: " + userTest.size() + "\nUser admin: " + userAdmin.size());
+                alert.setTitle("REPORT 3");
+                alert.setHeaderText("There are " + monthlyAppointments.size() + " appointments for the month. ");
+                alert.setContentText( "User Test scheduled: " + userTest.size() + " appointments this month" + "\nUser Admin scheduled: " + userAdmin.size() +
+                        " appointments this month");
                 alert.showAndWait();
 
             } catch (Exception e) {
