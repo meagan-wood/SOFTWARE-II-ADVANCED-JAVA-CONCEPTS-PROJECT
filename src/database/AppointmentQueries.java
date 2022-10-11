@@ -220,12 +220,8 @@ public class AppointmentQueries {
         ObservableList<Appointment> monthlyAppointments = FXCollections.observableArrayList();
 
         try{
-            System.out.println(monthId + "  Queries monthId");
-            System.out.println("Start SQL Statement");
             String sql = "SELECT * FROM APPOINTMENTS WHERE month(start) = ? "; //AND
-            System.out.println(sql);
             PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
-            System.out.println(ps);
             ps.setInt(1,monthId);
             ResultSet resultSet = ps.executeQuery();
 

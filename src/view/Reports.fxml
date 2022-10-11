@@ -52,11 +52,13 @@
       </Pane>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="370.0">
          <children>
-            <Label alignment="CENTER" layoutX="2.0" layoutY="43.0" prefHeight="43.0" prefWidth="370.0" text="Report 3:">
+            <Label alignment="CENTER" layoutX="2.0" layoutY="43.0" prefHeight="43.0" prefWidth="370.0" text="Report 3: User logins by month">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font></Label>
             <Button layoutX="130.0" layoutY="448.0" mnemonicParsing="false" onAction="#onReport3Button" text="Generate Report 3" />
+            <Label layoutX="66.0" layoutY="190.0" text="Please select the month you wish to view:" />
+            <ComboBox fx:id="comboBox3" layoutX="99.0" layoutY="215.0" prefWidth="150.0" />
          </children>
       </Pane>
    </items>

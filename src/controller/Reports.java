@@ -2,6 +2,7 @@ package controller;
 
 import database.AppointmentQueries;
 import database.ContactQueries;
+import database.UserQueries;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+import model.Users;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,12 +36,14 @@ public class Reports implements Initializable{
     public TableColumn endColumn;
     public TableColumn customerIdColumn;
     public TableColumn userIdColumn;
+    public ComboBox comboBox3;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             monthComboBox.setItems(listOfMonths());
+            comboBox3.setItems(listOfMonths());
             reportContactBox.setItems(ContactQueries.contacts());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -77,29 +81,32 @@ public class Reports implements Initializable{
                 ObservableList<Appointment> appointmentsByMonthList = AppointmentQueries.appointmentsByMonthName(monthId);
                 for (Appointment appointmentList: appointmentsByMonthList){
                     String appointmentType = appointmentList.getType();
-                    if(appointmentType.equals("Planning") || appointmentType.equals("Planning Session")){
+                    if(appointmentType.equals("Planning") || appointmentType.equals("Planning Session") || appointmentType.equals("planning") || appointmentType.equals("planning session")){
                         planningList.add(appointmentType);
                     }
-                    if(appointmentType.equals("Debriefing") || appointmentType.equals("De-Briefing")){
+                    if(appointmentType.equals("Debriefing") || appointmentType.equals("debriefing") || appointmentType.equals("De-Briefing") || appointmentType.equals("de-briefing")){
                         debriefingList.add(appointmentType);
                     }
-                    if(appointmentType.equals("Followup") || appointmentType.equals("Follow-Up")){
+                    if(appointmentType.equals("Followup") || appointmentType.equals("followup") || appointmentType.equals("Follow-Up") || appointmentType.equals("follow-up")){
                         followupList.add(appointmentType);
                     }
-                    if(appointmentType.equals("Open")){
+                    if(appointmentType.equals("Open") || appointmentType.equals("open")){
                         openList.add(appointmentType);
                     }
-                    if(appointmentType.equals("New") || appointmentType.equals("New Client") || appointmentType.equals("New Customer") || appointmentType.equals("new")){
+                    if(appointmentType.equals("New") || appointmentType.equals("New Client") || appointmentType.equals("new client")|| appointmentType.equals("New Customer") || appointmentType.equals("new customer") ||
+                            appointmentType.equals("new")){
                         newList.add(appointmentType);
                     }
 
-                    if (appointmentType.equals("Other")){
+                    if (appointmentType.equals("Other") || appointmentType.equals("other")){
                         otherList.add(appointmentType);
                     }
-                    if (!appointmentType.equals("Planning") && !appointmentType.equals("Planning Session")  && !appointmentType.equals("Debriefing") &&
-                            !appointmentType.equals("De-Briefing") && !appointmentType.equals("Followup") && !appointmentType.equals("Follow-Up") && !appointmentType.equals("Open") &&
+                    if (!appointmentType.equals("Planning") && !appointmentType.equals("Planning Session") && !appointmentType.equals("planning") && !appointmentType.equals("planning session") &&
+                            !appointmentType.equals("Debriefing") && !appointmentType.equals("debriefing") && !appointmentType.equals("de-briefing") &&!appointmentType.equals("De-Briefing") &&
+                            !appointmentType.equals("Followup") && !appointmentType.equals("Follow-Up") && !appointmentType.equals("followup") && !appointmentType.equals("follow-up") &&
+                            !appointmentType.equals("Open") && !appointmentType.equals("open") && !appointmentType.equals("new client") && !appointmentType.equals("new customer") &&
                             !appointmentType.equals("New") && !appointmentType.equals("New Client") && !appointmentType.equals("New Customer") && !appointmentType.equals("new") &&
-                            !appointmentType.equals("Other")){
+                            !appointmentType.equals("Other") && !appointmentType.equals("other")){
                         otherList.add(appointmentType);
                         System.out.println(otherList);
                     }
@@ -147,7 +154,47 @@ public class Reports implements Initializable{
     }
 
     public void onReport3Button(ActionEvent actionEvent) {
+
+        ObservableList userTest = FXCollections.observableArrayList();
+        ObservableList userAdmin = FXCollections.observableArrayList();
+
+        if(comboBox3.getValue() == null){
+            Alert alert3 = new Alert (Alert.AlertType.ERROR);
+            alert3.setTitle("ERROR");
+            alert3.setHeaderText("NO MONTH SELECTED");
+            alert3.setContentText("Please select the month to generate report.");
+            alert3.showAndWait();
+        }
+        else{
+            try{
+                String monthOfValue = comboBox3.getValue().toString();
+                String monthValueNum = monthOfValue.substring(0,2);
+                Integer monthId = Integer.parseInt(monthValueNum);
+                ObservableList<Users> loginsByMonth = UserQueries.userLoginsByMonth(monthId);
+                for (Users loginsList: loginsByMonth){
+                    String userName = loginsList.getUserName();
+                    if(userName.equals("test")) {
+                        userTest.add(loginsList);
+                    }
+                    if(userName.equals("admin")) {
+                        userAdmin.add(loginsList);
+                    }
+
+                }
+                Alert alert = new Alert (Alert.AlertType.INFORMATION);
+                alert.setTitle("REPORT 1");
+                alert.setHeaderText("User logins for: " + monthOfValue);
+                alert.setContentText("There were " + loginsByMonth.size() + " logins for the month " + "\nUser test: " + userTest.size() + "\nUser admin: " + userAdmin.size());
+                alert.showAndWait();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
+
+
+
 
     public void onReturnHome(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));

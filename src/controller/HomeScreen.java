@@ -142,7 +142,7 @@ public class HomeScreen implements Initializable {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
     }
 
-    public void onViewWeek(ActionEvent actionEvent) throws SQLException {
+    public void onViewWeek(ActionEvent actionEvent) {
         appointmentTableView.setItems(AppointmentQueries.appointmentsByWeek());
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
         endTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
@@ -170,7 +170,7 @@ public class HomeScreen implements Initializable {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
     }
 
-    public void onDelete(ActionEvent actionEvent) throws IOException {
+    public void onDelete(ActionEvent actionEvent) {
         Appointment a = appointmentTableView.getSelectionModel().getSelectedItem();
 
         if(a != null){

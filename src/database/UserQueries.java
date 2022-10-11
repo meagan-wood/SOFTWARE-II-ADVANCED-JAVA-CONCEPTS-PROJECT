@@ -2,12 +2,14 @@ package database;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Appointment;
 import model.Contact;
 import model.Users;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class UserQueries {
 
@@ -52,5 +54,28 @@ public class UserQueries {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static ObservableList<Users> userLoginsByMonth(int userId) {
+        ObservableList<Users> userLogins = FXCollections.observableArrayList();
+
+        try{
+            String sql = "SELECT * FROM USERS WHERE month(start) = ? ";
+            PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);
+            ps.setInt(1,userId);
+            ResultSet resultSet = ps.executeQuery();
+
+            while(resultSet.next()){
+                int userID = resultSet.getInt("User_ID");
+                String userName = resultSet.getString("UserName");
+                String password = resultSet.getString("Password");
+                Users newUserLogins = new Users(userId , userName, password);
+                userLogins.add(newUserLogins);
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return userLogins;
     }
 }
