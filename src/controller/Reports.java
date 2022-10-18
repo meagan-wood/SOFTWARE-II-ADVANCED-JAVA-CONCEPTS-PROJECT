@@ -87,7 +87,8 @@ public class Reports implements Initializable{
                     if(appointmentType.equals("Debriefing") || appointmentType.equals("debriefing") || appointmentType.equals("De-Briefing") || appointmentType.equals("de-briefing")){
                         debriefingList.add(appointmentType);
                     }
-                    if(appointmentType.equals("Followup") || appointmentType.equals("followup") || appointmentType.equals("Follow-Up") || appointmentType.equals("follow-up")){
+                    if(appointmentType.equals("Followup") || appointmentType.equals("followup") || appointmentType.equals("Follow-Up") || appointmentType.equals("follow-up")
+                            || appointmentType.equals("Follow-up")){
                         followupList.add(appointmentType);
                     }
                     if(appointmentType.equals("Open") || appointmentType.equals("open")){
@@ -104,9 +105,9 @@ public class Reports implements Initializable{
                     if (!appointmentType.equals("Planning") && !appointmentType.equals("Planning Session") && !appointmentType.equals("planning") && !appointmentType.equals("planning session") &&
                             !appointmentType.equals("Debriefing") && !appointmentType.equals("debriefing") && !appointmentType.equals("de-briefing") &&!appointmentType.equals("De-Briefing") &&
                             !appointmentType.equals("Followup") && !appointmentType.equals("Follow-Up") && !appointmentType.equals("followup") && !appointmentType.equals("follow-up") &&
-                            !appointmentType.equals("Open") && !appointmentType.equals("open") && !appointmentType.equals("new client") && !appointmentType.equals("new customer") &&
-                            !appointmentType.equals("New") && !appointmentType.equals("New Client") && !appointmentType.equals("New Customer") && !appointmentType.equals("new") &&
-                            !appointmentType.equals("Other") && !appointmentType.equals("other")){
+                            !appointmentType.equals("Follow-up") && !appointmentType.equals("Open") && !appointmentType.equals("open") && !appointmentType.equals("new client") &&
+                            !appointmentType.equals("new customer") && !appointmentType.equals("New") && !appointmentType.equals("New Client") && !appointmentType.equals("New Customer") &&
+                            !appointmentType.equals("new") && !appointmentType.equals("Other") && !appointmentType.equals("other")){
                         otherList.add(appointmentType);
                         System.out.println(otherList);
                     }

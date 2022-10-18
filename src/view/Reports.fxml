@@ -52,7 +52,7 @@
       </Pane>
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="370.0">
          <children>
-            <Label alignment="CENTER" layoutX="2.0" layoutY="43.0" prefHeight="43.0" prefWidth="370.0" text="Report 3: User logins by month">
+            <Label alignment="CENTER" layoutX="2.0" layoutY="43.0" prefHeight="43.0" prefWidth="370.0" text="Report 3: Appointments scheduled by User">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font></Label>
