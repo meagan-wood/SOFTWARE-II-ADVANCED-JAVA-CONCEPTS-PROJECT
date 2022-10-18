@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** Main application class. */
 public class MainApplication extends Application {
 
     @Override
@@ -23,7 +24,10 @@ public class MainApplication extends Application {
 
     }
 
-
+    /** Main method.
+     * First method called, establishes database connection
+     * @param args String[]
+     * */
     public static void main(String[] args) {
 
         JDBC.openConnection();

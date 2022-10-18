@@ -23,7 +23,7 @@ import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/** Create Appointment controller class*/
 public class CreateAppointment implements Initializable {
 
     public TableView custCreateAppTable;
@@ -47,7 +47,11 @@ public class CreateAppointment implements Initializable {
     public ComboBox<LocalTime> endTimeComboBox;
     public ComboBox<Users> userIdComboBox;
 
-
+    /** Initialize new appointment form. Loads the country and state combo boxes, loads start/end time combo boxes, and sets existing customer table
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -70,7 +74,8 @@ public class CreateAppointment implements Initializable {
         }
     }
 
-
+    /** Creates the lists for the start time combo boxes.
+     */
     private void startEndTimeCombos(){
 
         startTimeComboBox.setItems(TimeUtility.getStartEndTime());
@@ -78,7 +83,9 @@ public class CreateAppointment implements Initializable {
     }
 
 
-
+    /** Cancel button on create appointment form. Verifies you wish to cancel and lose unsaved data, returns to main form
+     * @param actionEvent clicked button
+     */
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
         alert3.setTitle("Confirmation");
@@ -93,7 +100,9 @@ public class CreateAppointment implements Initializable {
         }
     }
 
-
+    /** Select customer button to schedule appointment for. Provides error if no customer is selected
+     * @param actionEvent clicked button
+     */
     public void selectCustomerButton(ActionEvent actionEvent) {
         Customer c = (Customer) custCreateAppTable.getSelectionModel().getSelectedItem();
         if (c == null) {
@@ -109,6 +118,11 @@ public class CreateAppointment implements Initializable {
 
     }
 
+    /** Schedule appointment button. Verifies all data is entered correctly, checks for valid times, prints error for invalid data, missing data, invalid times, and saves data to database.
+     * Displays confirmation if save successful.
+     * Catches exceptions, prints stack trace.
+     * @param actionEvent clicked button
+     */
     public void onScheduleAppointment(ActionEvent actionEvent) throws SQLException {
         boolean noBlankFields = checkValidEntries();
         if(noBlankFields){
@@ -152,7 +166,9 @@ public class CreateAppointment implements Initializable {
         }
     }
 
-
+    /** Checks appointment times are within business hours. Provides specific alerts for each scenario.
+     * @return Boolean returns true if hours are valid, else returns false
+     */
     private boolean checkWithinBusinessHours() {
         LocalTime startTime = startTimeComboBox.getValue();
         LocalTime endTime = endTimeComboBox.getValue();

@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Add new customer controller class*/
 public class AddNewCustomer implements Initializable {
 
     public TextField nameText;
@@ -35,10 +36,11 @@ public class AddNewCustomer implements Initializable {
     public ComboBox<Country> countryComboBox;
     public ComboBox stateComboBox;
 
-    /*
-    Initialize new customer form, loads the country and state combo boxes
+    /** Initialize new customer form, loads the country and state combo boxes.
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
      */
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -52,8 +54,8 @@ public class AddNewCustomer implements Initializable {
     }
 
 
-    /*
-    Cancel button on add customer form, verifies you wish to cancel and lose unsaved data, returns to main form
+    /** Cancel button on add customer form. Verifies you wish to cancel and lose unsaved data, returns to main form
+     * @param actionEvent clicked button
     */
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
 
@@ -70,8 +72,7 @@ public class AddNewCustomer implements Initializable {
         }
     }
 
-    /*
-    Filters state/province combo box with the states/provinces associated with the country selected in country combo box
+    /** Filters state/province combo box. Sets state/province combo box with filtered list associated with the country selected from country combo box.
      */
     public void onCountry(ActionEvent actionEvent) throws SQLException {
         Integer cID = countryComboBox.getSelectionModel().getSelectedItem().getCountryId();
@@ -79,9 +80,10 @@ public class AddNewCustomer implements Initializable {
         stateComboBox.setItems(d);
     }
 
-    /*
-    Saves new customer data to database, verifies data, gives error popups for any fields left blank or invalid data,
-    provides confirmation for successful save, provides error if unable to save.
+    /** Saves new customer data to database. Verifies data, gives error popups for any fields left blank or invalid data,
+     * provides confirmation for successful save, provides error if unable to save.
+     * catches exceptions, prints stacktrace
+     * @param actionEvent button clicked
      */
     public void onSaveCustomer(ActionEvent actionEvent) throws SQLException {
         if(nameText.getText().isEmpty() || addressText.getText().isEmpty() || postalCodeText.getText().isEmpty() || phoneNumberText.getText().isEmpty() || stateComboBox.getValue() == null){
