@@ -9,8 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** Customer query class*/
 public class CustomerQueries {
 
+    /** Existing customers query. Database query returns all existing customers and associated country.
+     * Catches exceptions, prints stacktrace
+     * @return existingCustomerList observable list of customers and their countries
+     * @throws SQLException SQLException
+     */
     public static ObservableList<Customer> existingCustomers() throws SQLException {
 
         ObservableList<Customer> existingCustomersList = FXCollections.observableArrayList();
@@ -39,7 +45,15 @@ public class CustomerQueries {
         return existingCustomersList;
     }
 
-
+    /** Insert customer query. Database query inserts given customer data into database.
+     * @return rows affected
+     * @throws SQLException SQLException
+     * @param address address
+     * @param customerName customer name
+     * @param division division
+     * @param phoneNumber phone number
+     * @param postalCode postal code
+     */
     public static int insertCustomer(String customerName, String address, String postalCode, String phoneNumber, String division) throws SQLException {
         Division d = DivisionQueries.divisionsById(division);
         String sql = "INSERT INTO CUSTOMERS (Customer_Name, Address, Postal_Code, Phone, Division_ID) VALUES (?, ?, ?, ?, ?)";
@@ -54,6 +68,16 @@ public class CustomerQueries {
         return rowsAffected;
     }
 
+    /** Update customer query. Database query updates database for given customer.
+     * @return rows affected
+     * @throws SQLException SQLException
+     * @param address address
+     * @param customerName customer name
+     * @param divisionName division anme
+     * @param phoneNumber phone number
+     * @param postalCode postal code
+     * @param customerId customer Id
+     */
     public static int updateCustomer(int customerId, String customerName, String address, String postalCode, String phoneNumber, String divisionName) throws SQLException {
         Division d = DivisionQueries.divisionsById(divisionName);
         String sql = "UPDATE CUSTOMERS SET Customer_Name=?, Address=?, Postal_Code=?, Phone=?, Division_ID=? WHERE Customer_ID=?";
@@ -68,6 +92,10 @@ public class CustomerQueries {
         return rowsAffected;
     }
 
+    /** Delete customer query. Query deletes customer from database.
+     * @return rows affected
+     * @throws SQLException SQLException
+     */
     public static int deleteCustomer(int customerId) throws SQLException{
         String sql = "DELETE FROM CUSTOMERS WHERE Customer_ID=?";
         PreparedStatement ps = database.JDBC.connection.prepareStatement(sql);

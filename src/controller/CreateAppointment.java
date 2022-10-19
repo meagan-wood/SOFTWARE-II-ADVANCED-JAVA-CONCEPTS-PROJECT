@@ -77,7 +77,7 @@ public class CreateAppointment implements Initializable {
     }
 
 
-    /** Creates the lists for the start time combo boxes.
+    /** Creates the lists for the start/end time combo boxes.
      */
     private void startEndTimeCombos(){
         startTimeComboBox.setItems(TimeUtility.getStartEndTime());
@@ -85,8 +85,9 @@ public class CreateAppointment implements Initializable {
     }
 
 
-    /** Cancel button on create appointment form. Verifies you wish to cancel and lose unsaved data, returns to main form
-     * @param actionEvent clicked button
+    /** Cancel button on create appointment form. Verifies you wish to cancel and lose unsaved data, returns to main form.
+     * @throws IOException IOException
+     * @param actionEvent action event
      */
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
@@ -103,6 +104,7 @@ public class CreateAppointment implements Initializable {
     }
 
     /** Select customer button to schedule appointment for. Provides error if no customer is selected
+     * @throws SQLException SQLException
      * @param actionEvent clicked button
      */
     public void selectCustomerButton(ActionEvent actionEvent) throws SQLException {
@@ -125,6 +127,7 @@ public class CreateAppointment implements Initializable {
     /** Schedule appointment button. Verifies all data is entered correctly, checks for valid times, prints error for invalid data, missing data, invalid times, and saves data to database.
      * Displays confirmation if save successful.
      * Catches exceptions, prints stack trace.
+     * @throws SQLException SQLException
      * @param actionEvent clicked button
      */
     public void onScheduleAppointment(ActionEvent actionEvent) throws SQLException {
@@ -222,6 +225,9 @@ public class CreateAppointment implements Initializable {
         return true;
     }
 
+    /** Checks all entries are valid. Provides specific alerts for each scenario.
+     * @return Boolean returns true if entries are valid, else returns false
+     */
     private boolean checkValidEntries(){
         if(customerIdText.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -314,6 +320,10 @@ public class CreateAppointment implements Initializable {
         return true;
     }
 
+    /** Checks for scheduling conflicts. Provides specific alerts for each scenario.
+     * @throws SQLException SQLException
+     * @return Boolean returns true if there are no conflicts, else returns false
+     */
     boolean checkSchedulingConflicts() throws SQLException {
         LocalTime newStartTime = startTimeComboBox.getValue();
         LocalTime newEndTime = endTimeComboBox.getValue();

@@ -48,6 +48,11 @@ public class ExistingCustomer implements Initializable {
     public TableColumn contactColumn;
     public TableColumn typeColumn;
 
+    /** Initialize Existing customer form, loads the country and state combo boxes.
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -67,7 +72,10 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
-
+    /** Create new (customer) button on create existing customer form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onCreateNewButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddNewCustomer.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -75,6 +83,10 @@ public class ExistingCustomer implements Initializable {
         stage.show();
     }
 
+    /** Cancel button on existing customer form. Verifies you wish to cancel and lose unsaved data, returns to main form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onExitButton(ActionEvent actionEvent) throws IOException{
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
         alert3.setTitle("Confirmation");
@@ -89,6 +101,10 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
+    /** Edit button on existing customer form. Transfers customer data from table to text boxes/combo boxes to edit.
+     * Catches exceptions, prints stack trace. Alerts if no customer to edit has been selected.
+     * @param actionEvent action event
+     */
     public void onEditCustomerButton(ActionEvent actionEvent) {
         Customer c =  existingCustomersTable.getSelectionModel().getSelectedItem();
 
@@ -124,7 +140,10 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
-
+    /** Country combo box on existing customer form. Filters the state combo box based off of country selection.
+     * @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onCountry(ActionEvent actionEvent) throws SQLException {
 
         int cID = countryComboBox.getValue().getCountryId();
@@ -132,7 +151,10 @@ public class ExistingCustomer implements Initializable {
         stateComboBox.setItems(d);
     }
 
-
+    /** Update button on existing customer form. Checks for invalid data, provides alerts, save updated customer to database. Provides confirmation of save.
+     * Catches exceptions, prints stack trace. Alerts for error updating customer.
+     * @param actionEvent action event
+     */
     public void onUpdate(ActionEvent actionEvent) {
         if(nameTextBox.getText().isEmpty() || addressTextBox.getText().isEmpty() || postalCodeTextBox.getText().isEmpty() || phoneTextBox.getText().isEmpty() || stateComboBox.getValue() == null){
             Alert alert3 = new Alert (Alert.AlertType.ERROR);
@@ -172,6 +194,10 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
+    /** Delete associated appointment button on existing customer form. Deletes selected appointment, provides confirmation of appointment deleted, updates associated appointments table.
+     * Catches exceptions, prints stack trace. Alerts if unable to delete.
+     * @param actionEvent action event
+     */
     public void onDeleteAppointment(ActionEvent actionEvent) {
         Appointment a = (Appointment) existingAppointmentsTable.getSelectionModel().getSelectedItem();
 
@@ -225,6 +251,11 @@ public class ExistingCustomer implements Initializable {
         }
     }
 
+    /** Delete customer button on existing customer form. Deletes the customer from the database, provides confirmation, updates customer table.
+     * Catches exceptions, prints stack trace. Alerts if no customer selected, or unable to delete.
+     * @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onDeleteCustomer(ActionEvent actionEvent) throws SQLException {
         Customer c = existingCustomersTable.getSelectionModel().getSelectedItem();
 

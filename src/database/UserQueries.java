@@ -11,8 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/** User queries class. */
 public class UserQueries {
 
+    /** All users query. Database query returns all users.
+     * Catches exceptions, prints stacktrace
+     * @return userNames Observable list
+     * @throws SQLException SQLException
+     */
     public static ObservableList<Users> users() throws SQLException {
 
         ObservableList<Users> userNames = FXCollections.observableArrayList();
@@ -35,6 +41,11 @@ public class UserQueries {
         return userNames;
     }
 
+    /** Users by Id query. Database query gets user by user id.
+     * Catches exceptions, prints stacktrace
+     * @return null
+     * @throws SQLException SQLException
+     */
     public static Users usersById (int userId) throws SQLException {
         try{
             String sql = "SELECT * FROM users WHERE user_ID=?";

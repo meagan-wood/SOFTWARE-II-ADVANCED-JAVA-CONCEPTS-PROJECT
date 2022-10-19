@@ -44,7 +44,11 @@ public class HomeScreen implements Initializable {
     @FXML private TableColumn<Appointment, Integer> userIdColumn;
 
 
-
+    /** Initialize Home screen form, checks for appointments within 15 mins, checks for in progress appointments, loads appointment table.
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -69,7 +73,10 @@ public class HomeScreen implements Initializable {
 
     }
 
-
+    /** Logout button on home screen form. Asks for confirmation you wish to logout, takes you back to login form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onLogoutButton(ActionEvent actionEvent) throws IOException {
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
         alert3.setTitle("Confirmation");
@@ -84,6 +91,10 @@ public class HomeScreen implements Initializable {
         }
     }
 
+    /** Add customer button on home screen form. Loads Add new customer form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onAddNewCustomerButton(ActionEvent actionEvent) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddNewCustomer.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -91,6 +102,10 @@ public class HomeScreen implements Initializable {
         stage.show();
     }
 
+    /** Customer records button on home screen form. Loads Existing customer form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onExistingCustButton(ActionEvent actionEvent) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("/view/ExistingCustomer.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -98,6 +113,10 @@ public class HomeScreen implements Initializable {
         stage.show();
     }
 
+    /** Create appointment button on home screen form. Loads Add Create appointment form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onCreateAppButton(ActionEvent actionEvent) throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("/view/CreateAppointment.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -105,6 +124,11 @@ public class HomeScreen implements Initializable {
         stage.show();
     }
 
+    /** Modify appointment button on home screen form. Loads selected appointment data into modify appointment form. Alerts if no appointment selected.
+     *  @throws IOException IOException
+     *  @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onModifyAppointmentButton(ActionEvent actionEvent) throws IOException, SQLException {
         Appointment a = appointmentTableView.getSelectionModel().getSelectedItem();
 
@@ -128,6 +152,10 @@ public class HomeScreen implements Initializable {
         stage.show();
     }
 
+    /** View all radio button on home screen form. Default setting, displays all appointments in the table.
+     *  @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onViewAll(ActionEvent actionEvent) throws SQLException {
         appointmentTableView.setItems(AppointmentQueries.appointments());
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
@@ -142,6 +170,9 @@ public class HomeScreen implements Initializable {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
     }
 
+    /** View week radio button on home screen form. Displays the weeks appointments in the table.
+     * @param actionEvent action event
+     */
     public void onViewWeek(ActionEvent actionEvent) {
         appointmentTableView.setItems(AppointmentQueries.appointmentsByWeek());
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
@@ -156,6 +187,10 @@ public class HomeScreen implements Initializable {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
     }
 
+    /** View month radio button on home screen form. Displays the months appointments in the table.
+     * @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onViewMonth(ActionEvent actionEvent) throws SQLException {
         appointmentTableView.setItems(AppointmentQueries.appointmentsByMonth());
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
@@ -170,6 +205,11 @@ public class HomeScreen implements Initializable {
         userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
     }
 
+    /** Delete button for appointments on home screen form. Alerts if no appointment selected. Confirms if appointments was deleted from database, provides alert with appintment info,
+     * updates appointment table.
+     * Catches exceptions, prints stacktrace.
+     * @param actionEvent action event
+     */
     public void onDelete(ActionEvent actionEvent) {
         Appointment a = appointmentTableView.getSelectionModel().getSelectedItem();
 
@@ -224,8 +264,11 @@ public class HomeScreen implements Initializable {
     }
 
 
-private static boolean firstTime = true;
-
+    /** Checks for appointments in 15mins or in progress. Ensures it is first time from login. Provides appointment information, or alerts if no upcoming/inprogress appointments.
+     * Catches exceptions, prints stacktrace.
+     * Returns true if first time, else returns false
+     */
+    private static boolean firstTime = true;
     private void checkUpcomingAppointments(){
         if(!firstTime){
             return;
@@ -270,6 +313,10 @@ private static boolean firstTime = true;
         }
     }
 
+    /** Reports button on home screen form. Loads reports form.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onReportsButton(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

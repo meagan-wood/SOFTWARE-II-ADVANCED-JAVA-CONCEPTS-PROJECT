@@ -43,7 +43,11 @@ public class ModifyAppointmentController implements Initializable {
     public Appointment appointmentToModify = null;
     public ComboBox<Users> userIdComboBox;
 
-
+    /** Initialize Modify appointment form, loads contact box, time combo boxes, user combo box.
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -56,7 +60,10 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
-
+    /** Cancel button on Modify appointment form. Confirms you wish to cancel, loads home screen.
+     *  @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void OnCancelButton(ActionEvent actionEvent) throws IOException {
 
         Alert alert3 = new Alert (Alert.AlertType.CONFIRMATION);
@@ -72,6 +79,10 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
+    /** Save button on modify appointment form. Verifies all data, provides specific alerts for errors, updates appointment in database, updates appointment table.
+     * @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onSaveAppointment(ActionEvent actionEvent) throws SQLException, ParseException {
         boolean noBlankFields = checkValidEntries();
         if(noBlankFields){
@@ -115,9 +126,10 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
-
-
-
+    /** Collects selected appointment data.
+     * @throws SQLException SQLException
+     * @param appointment appointment
+     */
     public void sendAppointment(Appointment appointment) throws SQLException {
 
         appointmentToModify = appointment;
@@ -135,7 +147,8 @@ public class ModifyAppointmentController implements Initializable {
         endTimeComboBox.setValue(appointment.getEndDateTime().toLocalTime());
     }
 
-
+    /** Populates start/end time combos.
+     */
     private void startEndTimeCombos() {
 
         startTimeComboBox.setItems(TimeUtility.getStartEndTime());
@@ -143,7 +156,9 @@ public class ModifyAppointmentController implements Initializable {
 
     }
 
-
+    /** Checks date and times are within business hours. Provides specific alerts for each scenario.
+     * @return Boolean returns true if date/times are valid, else returns false
+     */
     private boolean checkWithinBusinessHours() {
         LocalTime startTime = startTimeComboBox.getValue();
         LocalTime endTime = endTimeComboBox.getValue();
@@ -193,7 +208,10 @@ public class ModifyAppointmentController implements Initializable {
         return true;
     }
 
-
+    /** Checks for scheduling conflicts. Provides specific alerts for each scenario.
+     * @throws SQLException SQLException
+     * @return Boolean returns true if there are no conflicts, else returns false
+     */
     boolean checkSchedulingConflicts() throws SQLException {
 
         LocalTime newStartTime = startTimeComboBox.getValue();
@@ -239,7 +257,9 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
-
+    /** Checks for vailid data entries. Provides specific alerts for each scenario.
+     * @return Boolean returns true if entries are valid, else returns false
+     */
     private boolean checkValidEntries(){
         if(customerIdText.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);

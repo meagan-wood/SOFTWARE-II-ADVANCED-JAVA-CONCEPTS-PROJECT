@@ -39,7 +39,11 @@ public class Reports implements Initializable{
     public TableColumn userIdColumn;
     public ComboBox comboBox3;
 
-
+    /** Initialize Reports form. Loads combo boxes.
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -51,6 +55,8 @@ public class Reports implements Initializable{
         }
     }
 
+    /** Creates list of months for combo boxes.
+     */
     public static  ObservableList<String> listOfMonths(){
 
         ObservableList<String> months = FXCollections.observableArrayList("01 January", "02 February", "03 March", "04 April", "05 May", "06 June", "07 July", "08 August",
@@ -58,11 +64,9 @@ public class Reports implements Initializable{
         return months;
     }
 
-
-    private void contactCombos(){
-
-    }
-
+    /** Generate report 1 button on Reports form. Checks value of combo box, provides count of appointment types for selected month.
+     * @param actionEvent action event
+     */
     public void onReport1Button(ActionEvent actionEvent) {
         ObservableList<String> debriefingList = FXCollections.observableArrayList();
         ObservableList<String> planningList = FXCollections.observableArrayList();
@@ -133,7 +137,10 @@ public class Reports implements Initializable{
     }
 
 
-
+    /** Generate report 2 button on reports form. Gets value from combo box, loads schedule into table for selected contact.
+     *  @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onReport2Button(ActionEvent actionEvent) throws SQLException {
 
         if(reportContactBox.getValue() == null){
@@ -161,7 +168,9 @@ public class Reports implements Initializable{
     }
 
 
-
+    /** Generate report 3 button on reports form. Gets value from combo box, provides the number of appointments scheduled for the selected month for each user.
+     * @param actionEvent action event
+     */
     public void onReport3Button(ActionEvent actionEvent) {
 
         ObservableList userTest = FXCollections.observableArrayList();
@@ -204,7 +213,10 @@ public class Reports implements Initializable{
 
 
 
-
+    /** Home button on reports form. Loads the home screen
+     *  @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onReturnHome(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

@@ -4,6 +4,7 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/** JDBC class. */
 public abstract class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
@@ -15,6 +16,9 @@ public abstract class JDBC {
     private static String password = "Passw0rd!"; //Password
     public static Connection connection; //Connection Interface
 
+    /** Method to open database connection.
+     * Catches exceptions, prints error.
+     */
     public static void openConnection()
     {
         try{
@@ -32,6 +36,9 @@ public abstract class JDBC {
         return connection;
     }
 
+    /** Method to close database connection.
+     * Catches exceptions
+     */
     public static void closeConnection(){
         try {
             connection.close();

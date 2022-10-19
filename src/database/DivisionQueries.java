@@ -8,8 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** Divisions queries class. */
 public class DivisionQueries {
 
+    /** Get divisions query. Database query retrieves all divisions.
+     * Catches exceptions, prints stacktrace
+     * @return divisionList Observable list of all divisions
+     * @throws SQLException SQLException
+     */
     public static ObservableList<Division> getDivisions() throws SQLException {
 
         ObservableList<Division> divisionList = FXCollections.observableArrayList();
@@ -32,6 +38,12 @@ public class DivisionQueries {
         return divisionList;
     }
 
+    /** Divisions by country id query. Database query retrieves divisions given country id.
+     * Catches exceptions, prints stacktrace
+     * @return sortedDivisionList Observable list of divisions associated with given country
+     * @throws SQLException SQLException
+     * @param countryId country id
+     */
     public static ObservableList<Division> associatedDivisions(int countryId) throws SQLException{
 
         ObservableList sortedDivisions = FXCollections.observableArrayList();
@@ -55,6 +67,13 @@ public class DivisionQueries {
         }
        return sortedDivisions;
     }
+
+    /** Divisions by country id query.
+     * Catches exceptions, prints stacktrace
+     * @return null
+     * @throws SQLException SQLException
+     * @param countryId country id
+     */
     public static Division divisionsByCountry(int countryId) throws SQLException{
 
         try{
@@ -77,6 +96,12 @@ public class DivisionQueries {
         return null;
     }
 
+    /** Division query to retrieve division id given division name.
+     * Catches exceptions, prints stacktrace
+     * @return null
+     * @throws SQLException SQLException
+     * @param division division name
+     */
     public static Division divisionsById(String division) throws SQLException{
 
         try{

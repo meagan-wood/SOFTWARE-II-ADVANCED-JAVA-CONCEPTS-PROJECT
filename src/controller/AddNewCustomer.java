@@ -55,6 +55,7 @@ public class AddNewCustomer implements Initializable {
 
 
     /** Cancel button on add customer form. Verifies you wish to cancel and lose unsaved data, returns to main form
+     * @throws IOException IOException
      * @param actionEvent clicked button
     */
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
@@ -72,8 +73,9 @@ public class AddNewCustomer implements Initializable {
         }
     }
 
-    /** Lambda Expression.
+    /** LAMBDA EXPRESSION, filters division combo box by country selection.
      * Filters state/province combo box. Sets state/province combo box with filtered list associated with the country selected from country combo box.
+     * @throws SQLException SQLException
      * @param actionEvent button clicked
      */
     public void onCountry(ActionEvent actionEvent) throws SQLException {
@@ -91,6 +93,7 @@ public class AddNewCustomer implements Initializable {
     /** Saves new customer data to database. Verifies data, gives error popups for any fields left blank or invalid data,
      * provides confirmation for successful save, provides error if unable to save.
      * catches exceptions, prints stacktrace
+     * @throws SQLException SQLException
      * @param actionEvent button clicked
      */
     public void onSaveCustomer(ActionEvent actionEvent) throws SQLException {

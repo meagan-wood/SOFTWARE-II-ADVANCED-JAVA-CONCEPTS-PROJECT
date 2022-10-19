@@ -33,6 +33,11 @@ public class Login implements Initializable {
     public Label loginLabel;
     //private ResourceBundle rb;
 
+    /** Initialize Login form, checks default language, displays in correct language, displays timezone.
+     * Catches exceptions, prints stacktrace
+     * @param resourceBundle resource bundle
+     * @param url url
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -48,20 +53,29 @@ public class Login implements Initializable {
         timeZoneDisplay();
     }
 
-
+    /** Gets default timezone and displays in label
+     */
     public void timeZoneDisplay(){
 
         String timeZone = ZoneId.systemDefault().toString();
         timeZoneLabel.setText(timeZone);
     }
 
+    /** Cancel button on login form. Closes application.
+     * @throws IOException IOException
+     * @param actionEvent action event
+     */
     public void onCancelButton(ActionEvent actionEvent) throws IOException {
         //Parent root = FXMLLoader.load(getClass().getResource("/view/Login.FXML"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
 
-
+    /** Enter button on login form. Verifies username/password. Provides alerts in default language for incorrect/missing data. Create/appends login_activity.txt.
+     * @throws  IOException IOException
+     * @throws SQLException SQLException
+     * @param actionEvent action event
+     */
     public void onEnterButton(ActionEvent actionEvent) throws IOException, SQLException {
         ResourceBundle rb = ResourceBundle.getBundle("language/language", Locale.getDefault());
         String userName = userNameText.getText();
@@ -91,7 +105,6 @@ public class Login implements Initializable {
                 while (resultSet.next()) {
 
                     if (resultSet.getString("User_Name").equals(userName) && resultSet.getString("Password").equals(password)) {
-                        //outputFile.println("Successful login:  " + userName + " logged in at " + Timestamp.valueOf(LocalDateTime.now())+ "\n" );
                         outputFile.println("Successful login: " + userName + " logged in at " + sDF.format(dateTime)+ "\n" );
                         System.out.println("File Written");
                         Parent root = FXMLLoader.load(getClass().getResource("/view/HomeScreen.FXML"));
@@ -106,7 +119,6 @@ public class Login implements Initializable {
                         alert.setContentText(rb.getString("notfound"));
                         ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText(rb.getString("okay"));
                         alert.showAndWait();
-                        //return;
                     }
                     outputFile.close();
                 }
@@ -118,7 +130,6 @@ public class Login implements Initializable {
                 alert.setContentText(rb.getString("usernotfound"));
                 ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText(rb.getString("okay"));
                 alert.showAndWait();
-               // return;
             }
         }
     }

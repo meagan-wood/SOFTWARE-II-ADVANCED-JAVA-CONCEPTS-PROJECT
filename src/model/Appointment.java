@@ -173,6 +173,9 @@ public class Appointment {
         this.userId = userId;
     }
 
+    /** Getter for the contact id.
+     * @return contactId
+     */
     public int getId(){
         return contactId;
     }

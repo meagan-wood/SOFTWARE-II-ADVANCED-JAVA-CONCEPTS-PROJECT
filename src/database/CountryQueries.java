@@ -8,8 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/** Country queries class. */
 public class CountryQueries {
 
+    /** Country by division id query. Database query retrieves country given division id.
+     * Catches exceptions, prints stacktrace
+     * @return null
+     * @throws SQLException SQLException
+     * @param divisionID division id
+     */
     public static Country getCountryByDivision(int divisionID) throws SQLException {
         try{
             String sql = "SELECT * FROM countries AS c INNER JOIN first_level_divisions AS d ON c.country_ID=d.country_ID" +
@@ -31,7 +38,11 @@ public class CountryQueries {
         return null;
     }
 
-
+    /** All countries query. Database query returns all country information.
+     * Catches exceptions, prints stacktrace
+     * @return countryList observable list of countries
+     * @throws SQLException SQLException
+     */
     public static ObservableList<Country> getCountries() throws SQLException {
 
         ObservableList<Country> countryList = FXCollections.observableArrayList();
