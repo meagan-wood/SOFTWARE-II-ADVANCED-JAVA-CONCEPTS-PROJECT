@@ -73,15 +73,15 @@ public class AddNewCustomer implements Initializable {
         }
     }
 
-    /** LAMBDA EXPRESSION, filters division combo box by country selection.
+    /** LAMBDA EXPRESSION, filters the list of divisions by the country selection made from the country combo box.
      * Filters state/province combo box. Sets state/province combo box with filtered list associated with the country selected from country combo box.
      * @throws SQLException SQLException
      * @param actionEvent button clicked
      */
     public void onCountry(ActionEvent actionEvent) throws SQLException {
         Integer cID = countryComboBox.getSelectionModel().getSelectedItem().getCountryId();
-        //ObservableList<Division> d = DivisionQueries.associatedDivisions(cID);
         ObservableList<Division> divisionsList = DivisionQueries.getDivisions();
+        //LAMBDA
         ObservableList<Division> filteredD = divisionsList.filtered(d ->{
             if(d.getCountryId() == cID)
                 return true;

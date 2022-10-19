@@ -50,20 +50,17 @@ public class AppointmentQueries {
         return customerAppointments;
     }
 
-    /** LAMBDA EXPRESSION, Appointments by contact ID query. Database query returns appointments for a specified contact.
+    /** LAMBDA EXPRESSION, appointments by contact ID. Database query returns appointments and Lambda finds the appointments with specified contact ID.
      * Catches exceptions, prints stacktrace
      * @return appointments for contact selected
      * @throws SQLException SQLException
      * @param ContactId contact id
      */
    public static ObservableList<Appointment> appointmentsByContactId(int ContactId) throws SQLException {
-
        ObservableList<Appointment> contactAppointments = FXCollections.observableArrayList();
-
        try{
-           String sql = "SELECT * FROM APPOINTMENTS"; //"SELECT * FROM APPOINTMENTS WHERE Contact_ID = ?"
+           String sql = "SELECT * FROM APPOINTMENTS";
            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-           //ps.setInt(1, ContactId);
            ResultSet resultSet = ps.executeQuery();
 
            while(resultSet.next()){
@@ -84,10 +81,9 @@ public class AppointmentQueries {
        catch
        (SQLException ex) {
            ex.printStackTrace();
-       }//return contactAppointments;
-
+       }
        /*
-           LAMBDA EXPRESSION
+         LAMBDA EXPRESSION
         */
        ObservableList<Appointment> appointmentsForContact = contactAppointments.filtered(a ->{
            if(a.getId() == ContactId)
