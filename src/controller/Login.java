@@ -20,6 +20,7 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** Login controller class. */
 public class Login implements Initializable {
 
     public TextField userNameText;

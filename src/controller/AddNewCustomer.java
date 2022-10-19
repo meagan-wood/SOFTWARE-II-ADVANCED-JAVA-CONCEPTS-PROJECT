@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/** Add new customer controller class*/
+/** Add new customer controller class. */
 public class AddNewCustomer implements Initializable {
 
     public TextField nameText;
@@ -72,12 +72,20 @@ public class AddNewCustomer implements Initializable {
         }
     }
 
-    /** Filters state/province combo box. Sets state/province combo box with filtered list associated with the country selected from country combo box.
+    /** Lambda Expression.
+     * Filters state/province combo box. Sets state/province combo box with filtered list associated with the country selected from country combo box.
+     * @param actionEvent button clicked
      */
     public void onCountry(ActionEvent actionEvent) throws SQLException {
         Integer cID = countryComboBox.getSelectionModel().getSelectedItem().getCountryId();
-        ObservableList<Division> d = DivisionQueries.associatedDivisions(cID);
-        stateComboBox.setItems(d);
+        //ObservableList<Division> d = DivisionQueries.associatedDivisions(cID);
+        ObservableList<Division> divisionsList = DivisionQueries.getDivisions();
+        ObservableList<Division> filteredD = divisionsList.filtered(d ->{
+            if(d.getCountryId() == cID)
+                return true;
+            return false;
+        });
+        stateComboBox.setItems(filteredD);
     }
 
     /** Saves new customer data to database. Verifies data, gives error popups for any fields left blank or invalid data,

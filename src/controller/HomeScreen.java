@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 
-
+/** Home screen controller class. */
 public class HomeScreen implements Initializable {
 
     public ToggleGroup toggleGroup;

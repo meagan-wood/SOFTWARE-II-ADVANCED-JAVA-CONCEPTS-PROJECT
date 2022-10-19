@@ -25,7 +25,7 @@ import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/** Modify Appointment controller class. */
 public class ModifyAppointmentController implements Initializable {
 
     public TextField customerIdText;

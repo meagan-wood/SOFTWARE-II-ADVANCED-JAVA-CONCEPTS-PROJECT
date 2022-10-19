@@ -5,6 +5,7 @@ import database.ContactQueries;
 import database.CustomerQueries;
 import database.UserQueries;
 import helper.TimeUtility;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +24,7 @@ import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/** Create Appointment controller class*/
+/** Create Appointment controller class. */
 public class CreateAppointment implements Initializable {
 
     public TableView custCreateAppTable;
@@ -68,16 +69,17 @@ public class CreateAppointment implements Initializable {
             contactNameComboBox.setItems(ContactQueries.contacts());
             userIdComboBox.setItems(UserQueries.users());
             startEndTimeCombos();
+
         }
         catch (SQLException throwable) {
             throwable.printStackTrace();
         }
     }
 
+
     /** Creates the lists for the start time combo boxes.
      */
     private void startEndTimeCombos(){
-
         startTimeComboBox.setItems(TimeUtility.getStartEndTime());
         endTimeComboBox.setItems(TimeUtility.getStartEndTime());
     }
@@ -103,7 +105,8 @@ public class CreateAppointment implements Initializable {
     /** Select customer button to schedule appointment for. Provides error if no customer is selected
      * @param actionEvent clicked button
      */
-    public void selectCustomerButton(ActionEvent actionEvent) {
+    public void selectCustomerButton(ActionEvent actionEvent) throws SQLException {
+
         Customer c = (Customer) custCreateAppTable.getSelectionModel().getSelectedItem();
         if (c == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -112,7 +115,8 @@ public class CreateAppointment implements Initializable {
             alert.setContentText("Please select a customer");
             alert.showAndWait();
             return;
-        } else {
+        }
+        else {
             customerIdText.setText(String.valueOf(c.getCustomerId()));
         }
 

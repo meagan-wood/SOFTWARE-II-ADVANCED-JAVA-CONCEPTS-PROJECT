@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/** Existing customers controller class. */
 public class ExistingCustomer implements Initializable {
 
     public TableView<Customer> existingCustomersTable;

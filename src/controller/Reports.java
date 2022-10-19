@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+/** Reports controller class. */
 public class Reports implements Initializable{
     public ComboBox monthComboBox;
     public ComboBox<Contact> reportContactBox;
@@ -58,6 +59,10 @@ public class Reports implements Initializable{
     }
 
 
+    private void contactCombos(){
+
+    }
+
     public void onReport1Button(ActionEvent actionEvent) {
         ObservableList<String> debriefingList = FXCollections.observableArrayList();
         ObservableList<String> planningList = FXCollections.observableArrayList();
@@ -77,7 +82,7 @@ public class Reports implements Initializable{
             try{
                 String monthOfValue = monthComboBox.getValue().toString();
                 String monthValueNum = monthOfValue.substring(0,2);
-                Integer monthId = Integer.parseInt(monthValueNum);
+                int monthId = Integer.parseInt(monthValueNum);
                 ObservableList<Appointment> appointmentsByMonthList = AppointmentQueries.appointmentsByMonthName(monthId);
                 for (Appointment appointmentList: appointmentsByMonthList){
                     String appointmentType = appointmentList.getType();
@@ -139,20 +144,23 @@ public class Reports implements Initializable{
             alert3.showAndWait();
         }
         else{
-            Contact contactSelected = reportContactBox.getValue();
-            int contactId = contactSelected.getContactId();
-            ObservableList<Appointment> appointmentsContacts = AppointmentQueries.appointmentsByContactId(contactId);
-            contactScheduleTable.setItems(appointmentsContacts);
-            startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
-            endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
-            appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
-            titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
-            descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
-            typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
-            customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
-            userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
+               Contact contactSelected = reportContactBox.getValue();
+               int contactId = contactSelected.getContactId();
+               ObservableList<Appointment> appointmentsContacts = AppointmentQueries.appointmentsByContactId(contactId);
+
+               contactScheduleTable.setItems(appointmentsContacts);
+               startColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("startDateTime"));
+               endColumn.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDateTime>("endDateTime"));
+               appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("appointmentId"));
+               titleColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("title"));
+               descriptionColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("description"));
+               typeColumn.setCellValueFactory(new PropertyValueFactory<Appointment, String>("type"));
+               customerIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("customerId"));
+               userIdColumn.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("userId"));
         }
     }
+
+
 
     public void onReport3Button(ActionEvent actionEvent) {
 
@@ -171,7 +179,7 @@ public class Reports implements Initializable{
                 String monthOfValue = comboBox3.getValue().toString();
                 String monthValueNum = monthOfValue.substring(0,2);
                 Integer monthId = Integer.parseInt(monthValueNum);
-                ObservableList<Appointment> monthlyAppointments = AppointmentQueries.appointmentsByMonthName(monthId);;
+                ObservableList<Appointment> monthlyAppointments = AppointmentQueries.appointmentsByMonthName(monthId);
                 for (Appointment appointmentList: monthlyAppointments){
                     Users userId = appointmentList.getUserId();
                     if(userId.getUserId() == 1) {
@@ -180,7 +188,6 @@ public class Reports implements Initializable{
                     if(userId.getUserId() == 2) {
                         userAdmin.add(appointmentList);
                     }
-
                 }
                 Alert alert = new Alert (Alert.AlertType.INFORMATION);
                 alert.setTitle("REPORT 3");
