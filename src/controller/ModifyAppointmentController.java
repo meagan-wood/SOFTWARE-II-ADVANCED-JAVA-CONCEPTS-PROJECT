@@ -81,6 +81,7 @@ public class ModifyAppointmentController implements Initializable {
 
     /** Save button on modify appointment form. Verifies all data, provides specific alerts for errors, updates appointment in database, updates appointment table.
      * @throws SQLException SQLException
+     * @throws ParseException ParseException
      * @param actionEvent action event
      */
     public void onSaveAppointment(ActionEvent actionEvent) throws SQLException, ParseException {

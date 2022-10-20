@@ -95,6 +95,7 @@ public class CustomerQueries {
     /** Delete customer query. Query deletes customer from database.
      * @return rows affected
      * @throws SQLException SQLException
+     * @param customerId customer id
      */
     public static int deleteCustomer(int customerId) throws SQLException{
         String sql = "DELETE FROM CUSTOMERS WHERE Customer_ID=?";

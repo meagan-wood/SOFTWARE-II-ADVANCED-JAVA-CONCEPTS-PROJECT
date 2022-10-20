@@ -41,6 +41,7 @@ public class ContactQueries {
      * Catches exceptions, prints stacktrace
      * @return  null
      * @throws SQLException SQLException
+     * @param contactID contact id
      */
     public static Contact contactsId(int contactID) throws SQLException {
         try{

@@ -160,6 +160,7 @@ public class Appointment {
 
     /** Getter for the userId.
      * @return UserQueries.usersById(userId) Returns user information given user id
+     * @throws SQLException SQLException
      */
     public Users getUserId() throws SQLException {
         return UserQueries.usersById(userId);
@@ -182,6 +183,7 @@ public class Appointment {
 
     /** Getter for the contactId.
      * @return ContactQueries.contactsId(contactId) Returns contact information given contact id
+     * @throws SQLException SQLException
      */
     public Contact getContactId() throws SQLException {
         return ContactQueries.contactsId(contactId);

@@ -56,6 +56,7 @@ public class Reports implements Initializable{
     }
 
     /** Creates list of months for combo boxes.
+     * @return months list
      */
     public static  ObservableList<String> listOfMonths(){
 

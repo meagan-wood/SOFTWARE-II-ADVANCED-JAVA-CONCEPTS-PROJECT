@@ -28,6 +28,6 @@ scheduled appointment, or a bonus if they schedule over a set amount.)
 
 
 ###Lambdas
-- 1 - Navigate to the "NewCustomer" in the controller package. Find the "onCountryMethod" (Line 81)
+- 1 - Navigate to the "addNewCustomer" in the controller package. Find the "onCountryMethod" (Line 84)
 - 2 - Navigate to the "AppointmentQueries" in the database package. Find the "appointmentsByContactId"
-method (Line 91)
+method (Line 86)

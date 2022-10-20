@@ -16,6 +16,7 @@ public class AppointmentQueries {
      * Catches exceptions, prints stacktrace
      * @return customerAppointments observable list
      * @throws SQLException SQLException
+     * @param CustomerId customer id
      */
     public static ObservableList<Appointment> associatedApointments(int CustomerId) throws SQLException {
 
@@ -205,6 +206,8 @@ public class AppointmentQueries {
     /** Deletes appointment query. Database query deletes the selected appointment.
      * Catches exceptions, prints stacktrace
      * @return rows affected
+     * @param appointmentId appointment id
+     * @throws SQLException SQLException
      */
     public static int deleteAppointment(int appointmentId) throws SQLException {
         String sql = "DELETE FROM APPOINTMENTS WHERE Appointment_ID=?";

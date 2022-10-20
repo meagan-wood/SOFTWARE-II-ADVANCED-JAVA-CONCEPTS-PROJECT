@@ -45,6 +45,7 @@ public class UserQueries {
      * Catches exceptions, prints stacktrace
      * @return null
      * @throws SQLException SQLException
+     * @param userId user id
      */
     public static Users usersById (int userId) throws SQLException {
         try{

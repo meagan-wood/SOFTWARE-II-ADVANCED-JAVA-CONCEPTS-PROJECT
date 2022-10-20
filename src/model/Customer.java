@@ -113,6 +113,7 @@ public class Customer {
 
     /** Getter for the division.
      * @return DivisionQueries.divisionsByCountry() Returns list of division names for country
+     * @throws SQLException SQLException
      */
     public Division getDivision() throws SQLException {
         return DivisionQueries.divisionsByCountry(countryId);
@@ -120,6 +121,7 @@ public class Customer {
 
     /** Getter for the divisionName.
      * @return division Returns division names
+     * @throws SQLException SQLException
      */
     public String getDivisionName() throws SQLException {
         return this.division;
@@ -149,6 +151,7 @@ public class Customer {
 
     /** Getter for the country.
      * @return CountryQueries.getCountryByDivision() Returns country name for specific division
+     * @throws SQLException SQLException
      */
     public Country getCountry() throws SQLException {
         return CountryQueries.getCountryByDivision(divisionId);
