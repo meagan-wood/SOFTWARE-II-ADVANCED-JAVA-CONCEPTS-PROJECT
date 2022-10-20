@@ -3,7 +3,7 @@
 
 * Author: Meagan Wood
 * Contact: mwoo195@wgu.edu
-* Version: 1.0.0
+* Version: 1.0.1
 * Date: 10/19/2022
 
 ###Versions
@@ -19,7 +19,7 @@ home screen will appear. Here the user will see all scheduled appointments and h
 navigate throughout the program where the user can add, update, and delete customer information and
 appointments. 
 
-###Addition report
+###Additional report
 In the reports section you will find a 3rd report. For this report I chose to filter appointments
 by a selected month and by the user who scheduled it. This report is useful to view the total
 amount of appointments scheduled by each user for each month. This data can be used to ensure users

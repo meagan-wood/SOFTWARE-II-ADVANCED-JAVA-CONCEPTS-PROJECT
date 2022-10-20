@@ -360,6 +360,30 @@ public class CreateAppointment implements Initializable {
                 alert.showAndWait();
                 return false;
             }
+            else if(newStartDT.equals(existingAppointmentStart)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("2: SCHEDULING CONFLICT");
+                alert.setContentText("Customer already has an appointment during that time.");
+                alert.showAndWait();
+                return false;
+            }
+            else if(newEndDT.equals(existingAppointmentEnd)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("2: SCHEDULING CONFLICT");
+                alert.setContentText("Customer already has an appointment during that time.");
+                alert.showAndWait();
+                return false;
+            }
+            else if(existingAppointmentStart.isAfter(newStartDT) && existingAppointmentEnd.isBefore(newEndDT)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("2: SCHEDULING CONFLICT");
+                alert.setContentText("Customer already has an appointment during that time.");
+                alert.showAndWait();
+                return false;
+            }
         }
         return true;
     }
